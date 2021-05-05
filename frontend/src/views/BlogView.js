@@ -1,8 +1,10 @@
 /* BLOG POST VIEW */
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import ReactMarkdown from 'react-markdown';
 import { getPostById } from '../actions/blogActions';
 import Wrapper from '../components/Wrapper';
+import { dateFix } from '../helpers/helpers';
 
 const BlogView = ({ match }) => {
   const dispatch = useDispatch();
@@ -16,14 +18,21 @@ const BlogView = ({ match }) => {
 
   return (
     <>
-      {blogpost ? (
+      {blogpost && blogpost.createdAt ? (
         <Wrapper>
-          <h1>{blogpost.name}</h1>
-          <p>{blogpost.byline}</p>
-          <p>{blogpost.content}</p>
+          <ReactMarkdown children={blogpost.name} />
+          <ReactMarkdown children={blogpost.byline} />
+          <p>{dateFix(blogpost.createdAt)}</p>
+          <ReactMarkdown children={blogpost.content} />
         </Wrapper>
       ) : (
-        <h1>asdf</h1>
+        <>
+          <h1>Error:</h1>
+          <p>
+            Could not reach the database. Or the author just needs to get to
+            work!
+          </p>
+        </>
       )}
     </>
   );

@@ -11,6 +11,8 @@ connectDB();
 
 const importData = async () => {
   try {
+    await Blog.deleteMany();
+
     const createdBlogs = await Blog.insertMany(blogposts);
 
     console.log('Data import successful'.green.inverse);

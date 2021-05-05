@@ -5,7 +5,7 @@ const Wrapper = ({ children }) => {
   return (
     <Container className='my-3'>
       <Row className='justify-content-md-center'>
-        <Col xs={12} md={8}>
+        <Col xs={12} md={9}>
           {children}
         </Col>
       </Row>
