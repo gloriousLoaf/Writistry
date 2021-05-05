@@ -4,6 +4,7 @@ import thunk from 'redux-thunk';
 import { userLoginReducer, userRegisterReducer } from './reducers/userReducers';
 import {
   blogListReducer,
+  blogByIdReducer,
   blogCreateReducer,
   blogUpdateReducer,
 } from './reducers/blogReducers';
@@ -12,6 +13,7 @@ const reducer = combineReducers({
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
   blogList: blogListReducer,
+  blogById: blogByIdReducer,
   blogCreate: blogCreateReducer,
   blogUpdate: blogUpdateReducer,
 });
