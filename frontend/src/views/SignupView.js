@@ -2,7 +2,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Form, Button, Row, Col } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
 import Wrapper from '../components/Wrapper';
+import { register } from '../actions/userActions';
 
 const SignupView = () => {
   const [name, setName] = useState('');
@@ -10,8 +12,20 @@ const SignupView = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
+  const dispatch = useDispatch();
+
   const submitHandler = (e) => {
     e.preventDefault();
+    if (
+      name === '' ||
+      email === '' ||
+      password === '' ||
+      confirmPassword === ''
+    ) {
+      return;
+    } else {
+      dispatch(register(name, email, password));
+    }
   };
 
   return (

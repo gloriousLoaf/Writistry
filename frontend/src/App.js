@@ -1,17 +1,18 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Container } from 'react-bootstrap';
+
 import SignupView from './views/SignupView';
 import SigninView from './views/SigninView';
-import './App.css';
 
 const App = () => {
   return (
-    <div className='App'>
-      <Router>
+    <Router>
+      <Container>
         <Route path='/signup' component={SignupView} />
         <Route path='/signin' component={SigninView} />
-      </Router>
-    </div>
+      </Container>
+    </Router>
   );
 };
 

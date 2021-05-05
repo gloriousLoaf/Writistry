@@ -4,6 +4,7 @@ import path from 'path';
 import dotenv from 'dotenv';
 import colors from 'colors';
 import connectDB from './config/db.js';
+import userRoutes from './routes/userRoutes.js';
 
 dotenv.config();
 
@@ -14,6 +15,8 @@ const app = express();
 process.env.NODE_ENV === 'development';
 
 app.use(express.json());
+
+app.use('/api/users', userRoutes);
 
 // ES modules
 const __dirname = path.resolve();

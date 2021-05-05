@@ -168,6 +168,7 @@ const updateUser = asyncHandler(async (req, res) => {
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
     // admin can set isAdmin to false. if undefined, fallback to original value
+    // could be nullish operator, but those are scary...
     // user.isAdmin = req.body.isAdmin ?? user.isAdmin;
     user.isAdmin =
       req.body.isAdmin === undefined || null ? user.isAdmin : req.body.isAdmin;
