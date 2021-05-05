@@ -29,7 +29,7 @@ const protect = asyncHandler(async (req, res, next) => {
 });
 
 const isAdmin = (req, res, next) => {
-  if (req.user && req.user.isAdmin) {
+  if (req.body.userInfo === true) {
     next();
   } else {
     res.status(401);

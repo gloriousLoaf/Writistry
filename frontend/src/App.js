@@ -7,6 +7,7 @@ import SignupView from './views/SignupView';
 import SigninView from './views/SigninView';
 import FeedView from './views/FeedView';
 import BlogView from './views/BlogView';
+import CreateView from './views/CreateView';
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
         <Route path='/signin' component={SigninView} exact />
         <Route path='/feed' component={FeedView} exact />
         <Route path='/blogposts/:id' component={BlogView} exact />
+        <Route path='/admin/create' component={CreateView} exact />
       </Container>
     </Router>
   );

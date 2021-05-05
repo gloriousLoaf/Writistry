@@ -60,7 +60,9 @@ export const getPostById = (id) => async (dispatch) => {
 };
 
 // CREATE
-export const createPost = (name, byline, content) => async (dispatch) => {
+export const createPost = (userInfo, name, byline, content) => async (
+  dispatch
+) => {
   try {
     dispatch({
       type: BLOG_CREATE_REQUEST,
@@ -68,13 +70,14 @@ export const createPost = (name, byline, content) => async (dispatch) => {
 
     const config = {
       headers: {
+        Authorization: `Bearer ${userInfo.token}`,
         'Content-Type': 'application/json',
       },
     };
 
     const { data } = await axios.post(
       '/api/blogs',
-      { name, byline, content },
+      { userInfo, name, byline, content },
       config
     );
 

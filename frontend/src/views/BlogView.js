@@ -20,14 +20,18 @@ const BlogView = ({ match }) => {
     <>
       {blogpost && blogpost.createdAt ? (
         <Wrapper>
-          <ReactMarkdown children={blogpost.name} />
-          <ReactMarkdown children={blogpost.byline} />
-          <p>{dateFix(blogpost.createdAt)}</p>
-          <ReactMarkdown children={blogpost.content} />
+          <ReactMarkdown children={`# ${blogpost.name}`} />
+          <ReactMarkdown children={`_${blogpost.byline}_`} />
+          <ReactMarkdown
+            children={dateFix(blogpost.createdAt)}
+            className='small'
+          />
+          <hr />
+          <ReactMarkdown children={blogpost.content} className='my-4' />
         </Wrapper>
       ) : (
         <>
-          <h1>Error:</h1>
+          <h1>Loading...</h1>
           <p>
             Could not reach the database. Or the author just needs to get to
             work!

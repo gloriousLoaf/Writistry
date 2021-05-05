@@ -1,5 +1,4 @@
 :root {
-  --white: #fff;
   --red: #d9534f;
   --dark-red: #c9302c;
 }
@@ -52,7 +51,7 @@ button:focus {
 .to-feed {
   display: inline-block;
   background-color: var(--red);
-  color: var(--white);
+  color: #fff;
   padding: 1em 1.5em;
   text-decoration: none;
 }
@@ -60,7 +59,7 @@ button:focus {
 .to-feed:hover,
 .to-feed:focus {
   background-color: var(--dark-red);
-  color: var(--white);
+  color: #fff;
   text-decoration: none;
   transform: scale(0.9);
 }
@@ -72,6 +71,12 @@ button:focus {
 
 /* overriding some bootstrap
   and improving keyboard focus */
+
+.navbar-nav a:hover,
+.navbar-nav a:focus {
+  color: var(--red) !important;
+  text-decoration: underline #000 !important;
+}
 
 .card a:focus {
   outline: 2px solid;
@@ -89,4 +94,18 @@ button:focus {
 
 .alert {
   opacity: 0.8;
+}
+
+.dropdown-item {
+  color: #000;
+  background-color: #fff;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus,
+.dropdown-item.active,
+.dropdown-item:active {
+  color: var(--red);
+  text-decoration: none;
+  background-color: #fff !important;
 }

@@ -6,11 +6,15 @@ import {
   createBlog,
   updateBlogById,
 } from '../controllers/blogController.js';
-import { protect, isAdmin } from '../middleware/authMiddleware.js';
+import { isAdmin } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-router.route('/').get(getBlogs).post(protect, isAdmin, createBlog);
-router.route('/:id').get(getBlogById).put(protect, isAdmin, updateBlogById);
+router
+  .route('/')
+  .get(getBlogs)
+  .post(isAdmin, createBlog)
+  .put(isAdmin, updateBlogById);
+router.route('/:id').get(getBlogById);
 
 export default router;
