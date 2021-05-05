@@ -1,49 +1,35 @@
-import React from 'react';
-import { Card } from 'react-bootstrap';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Card } from 'react-bootstrap';
+import { listPosts } from '../actions/blogActions';
 
-const BlogCard = ({ blogposts }) => {
+const BlogCard = () => {
+  const dispatch = useDispatch();
+
+  const blogList = useSelector((state) => state.blogList);
+  const { blogposts } = blogList;
+
+  useEffect(() => {
+    dispatch(listPosts());
+  }, [dispatch]);
+
   return (
-    // <Card className='my-4'>
-    //   <Card.Body>
-    //     <Link to={`/blogposts/${blogpost._id}`}>
-    //       <Card.Title className='mb-2'>{blogpost.title}</Card.Title>
-    //       <Card.Text>{blogpost.byline}</Card.Text>
-    //     </Link>
-    //   </Card.Body>
-    // </Card>
-
     <>
-      <Card className='my-4'>
-        <Card.Body>
-          <Link to={'/'}>
-            <Card.Title className='mb-2'>This is a smart blog post</Card.Title>
-          </Link>
-          <Card.Text>
-            17 Ways to write a listicle that will do big numbers
-          </Card.Text>
-        </Card.Body>
-      </Card>
-      <Card className='my-4'>
-        <Card.Body>
-          <Link to={'/'} className='mb-2'>
-            <Card.Title>This is a smart blog post</Card.Title>
-          </Link>
-          <Card.Text>
-            17 Ways to write a listicle that will do big numbers
-          </Card.Text>
-        </Card.Body>
-      </Card>
-      <Card className='my-4'>
-        <Card.Body>
-          <Link to={'/'}>
-            <Card.Title className='mb-2'>This is a smart blog post</Card.Title>
-          </Link>
-          <Card.Text>
-            17 Ways to write a listicle that will do big numbers
-          </Card.Text>
-        </Card.Body>
-      </Card>
+      {blogposts ? (
+        blogposts.map((blogpost) => (
+          <Card key={blogposts._id} className='my-4'>
+            <Card.Body>
+              <Link to={`/blogposts/${blogpost._id}`}>
+                <Card.Title className='mb-2'>{blogpost.name}</Card.Title>
+              </Link>
+              <Card.Text>{blogpost.byline}</Card.Text>
+            </Card.Body>
+          </Card>
+        ))
+      ) : (
+        <h1>yo</h1>
+      )}
     </>
   );
 };
