@@ -35,7 +35,6 @@ const getBlogById = asyncHandler(async (req, res) => {
 const createBlog = asyncHandler(async (req, res) => {
   const blog = new Blog({
     name: req.body.name,
-    user: req.user._id,
     byline: req.body.byline,
     content: req.body.content,
   });
@@ -56,7 +55,6 @@ const updateBlogById = asyncHandler(async (req, res) => {
 
   if (blog) {
     blog.name = name;
-    blog.user = user;
     blog.byline = byline;
     blog.content = content;
 

@@ -51,7 +51,7 @@ export const logout = () => (dispatch) => {
   let clearKeys = ['userInfo'];
   clearKeys.forEach((key) => localStorage.removeItem(key));
   dispatch({ type: USER_LOGOUT });
-  document.location.href = '/login';
+  document.location.href = '/';
 };
 
 // REGISTER

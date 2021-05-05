@@ -2,13 +2,12 @@ import React from 'react';
 import { Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-const BlogCard = ({ blogpost }) => {
+const BlogCard = ({ blogposts }) => {
   return (
     // <Card className='my-2'>
     //   <Card.Body>
     //     <Link to={`/blogposts/${blogpost._id}`}>
-    //       <Card.Title>by {blogpost.title}</Card.Title>
-    //       <Card.Subtitle className='mb-2'>{blogpost.username}</Card.Subtitle>
+    //       <Card.Title className='mb-2'>{blogpost.title}</Card.Title>
     //       <Card.Text>{blogpost.byline}</Card.Text>
     //     </Link>
     //   </Card.Body>
@@ -18,9 +17,18 @@ const BlogCard = ({ blogpost }) => {
       <Card className='my-2'>
         <Card.Body>
           <Link to={'/'}>
+            <Card.Title className='mb-2'>This is a smart blog post</Card.Title>
+          </Link>
+          <Card.Text>
+            17 Ways to write a listicle that will do big numbers
+          </Card.Text>
+        </Card.Body>
+      </Card>
+      <Card className='my-2'>
+        <Card.Body>
+          <Link to={'/'} className='mb-2'>
             <Card.Title>This is a smart blog post</Card.Title>
           </Link>
-          <Card.Subtitle className='mb-2'>by Some Person</Card.Subtitle>
           <Card.Text>
             17 Ways to write a listicle that will do big numbers
           </Card.Text>
@@ -29,20 +37,8 @@ const BlogCard = ({ blogpost }) => {
       <Card className='my-2'>
         <Card.Body>
           <Link to={'/'}>
-            <Card.Title>This is a smart blog post</Card.Title>
+            <Card.Title className='mb-2'>This is a smart blog post</Card.Title>
           </Link>
-          <Card.Subtitle className='mb-2'>by Some Person</Card.Subtitle>
-          <Card.Text>
-            17 Ways to write a listicle that will do big numbers
-          </Card.Text>
-        </Card.Body>
-      </Card>
-      <Card className='my-2'>
-        <Card.Body>
-          <Link to={'/'}>
-            <Card.Title>This is a smart blog post</Card.Title>
-          </Link>
-          <Card.Subtitle className='mb-2'>by Some Person</Card.Subtitle>
           <Card.Text>
             17 Ways to write a listicle that will do big numbers
           </Card.Text>
