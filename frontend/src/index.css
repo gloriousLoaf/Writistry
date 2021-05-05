@@ -1,3 +1,9 @@
+:root {
+  --white: #fff;
+  --red: #d9534f;
+  --dark-red: #c9302c;
+}
+
 * {
   color: #000;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
@@ -23,19 +29,18 @@ h3 {
   padding: 1rem 0;
 }
 
-/* here through next comment, overriding some bootstrap
-  and improving keyboard focus */
 a,
 a:hover {
   outline: none;
-  color: #d9534f;
+  color: var(--red);
 }
 
 a:focus {
   text-decoration: underline;
 }
 
-button {
+button,
+.to-feed {
   transition: all 0.3s ease !important;
 }
 
@@ -43,6 +48,30 @@ button:hover,
 button:focus {
   transform: scale(0.9);
 }
+
+.to-feed {
+  display: inline-block;
+  background-color: var(--red);
+  color: var(--white);
+  padding: 1em 1.5em;
+  text-decoration: none;
+}
+
+.to-feed:hover,
+.to-feed:focus {
+  background-color: var(--dark-red);
+  color: var(--white);
+  text-decoration: none;
+  transform: scale(0.9);
+}
+
+.selfie {
+  max-height: 12rem;
+  max-width: 12rem;
+}
+
+/* overriding some bootstrap
+  and improving keyboard focus */
 
 .card a:focus {
   outline: 2px solid;
@@ -60,24 +89,4 @@ button:focus {
 
 .alert {
   opacity: 0.8;
-}
-
-/* restyling the default blue pagination */
-.page-link {
-  z-index: 3;
-  color: #9c27b0;
-  border-color: #9c27b0;
-}
-.page-link:hover {
-  color: #000;
-}
-.page-item:first-child .page-link,
-.page-item:last-child .page-link {
-  border-radius: 0;
-}
-/* inherits color: #fff */
-.page-item.active .page-link {
-  z-index: 3;
-  background-color: #9c27b0;
-  border-color: #9c27b0;
 }

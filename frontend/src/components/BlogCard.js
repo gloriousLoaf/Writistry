@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const BlogCard = ({ blogposts }) => {
   return (
-    // <Card className='my-2'>
+    // <Card className='my-4'>
     //   <Card.Body>
     //     <Link to={`/blogposts/${blogpost._id}`}>
     //       <Card.Title className='mb-2'>{blogpost.title}</Card.Title>
@@ -14,7 +14,7 @@ const BlogCard = ({ blogposts }) => {
     // </Card>
 
     <>
-      <Card className='my-2'>
+      <Card className='my-4'>
         <Card.Body>
           <Link to={'/'}>
             <Card.Title className='mb-2'>This is a smart blog post</Card.Title>
@@ -24,7 +24,7 @@ const BlogCard = ({ blogposts }) => {
           </Card.Text>
         </Card.Body>
       </Card>
-      <Card className='my-2'>
+      <Card className='my-4'>
         <Card.Body>
           <Link to={'/'} className='mb-2'>
             <Card.Title>This is a smart blog post</Card.Title>
@@ -34,7 +34,7 @@ const BlogCard = ({ blogposts }) => {
           </Card.Text>
         </Card.Body>
       </Card>
-      <Card className='my-2'>
+      <Card className='my-4'>
         <Card.Body>
           <Link to={'/'}>
             <Card.Title className='mb-2'>This is a smart blog post</Card.Title>
