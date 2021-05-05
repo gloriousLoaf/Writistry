@@ -1,18 +1,28 @@
 /* SIGNUP VIEW */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Form, Button, Row, Col } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Wrapper from '../components/Wrapper';
 import { register } from '../actions/userActions';
 
-const SignupView = () => {
+const SignupView = ({ location, history }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const dispatch = useDispatch();
+
+  const userRegister = useSelector((state) => state.userRegister);
+  const { userInfo } = userRegister;
+
+  const redirect = location.search ? location.search.split('=')[1] : '/feed';
+
+  // prevent signed-in users from seeing sign up page
+  useEffect(() => {
+    userInfo && history.push(redirect);
+  }, [history, userInfo, redirect]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -77,7 +87,7 @@ const SignupView = () => {
       </Form>
       <Row className='py-3'>
         <Col>
-          Already have an account? <Link to={'/login'}>Sign In</Link>
+          Already have an account? <Link to={'/signin'}>Sign In</Link>
         </Col>
       </Row>
     </Wrapper>
