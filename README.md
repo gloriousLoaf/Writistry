@@ -48,6 +48,7 @@ To start your own instance, clone this repository and run `npm install` from the
 <p>&nbsp;</p>
 
 ## 🔮 Future Development
+* **Update & Delete Posts** `!important` Admin priviledge coming _very soon_.
 * **Likes, Comments & Bookmarks** For signed up users.
 * **GitHub-flavored Markdown & Syntax Highlighting** Because code should be pretty.
 * **Search** For your favorite post by keyword.
