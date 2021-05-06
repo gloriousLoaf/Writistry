@@ -14,7 +14,7 @@ const SigninView = ({ location, history }) => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const redirect = '/feed';
+  const redirect = location.search ? location.search.split('=')[1] : '/feed';
 
   // prevent signed-in users from seeing sign in page
   useEffect(() => {

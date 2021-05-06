@@ -5,7 +5,7 @@ import { Button, Form } from 'react-bootstrap';
 import Wrapper from '../components/Wrapper';
 import { createPost } from '../actions/blogActions';
 
-const CreateView = ({ history }) => {
+const CreateView = ({ location, history }) => {
   const [name, setName] = useState('');
   const [byline, setByline] = useState('');
   const [content, setContent] = useState('');
@@ -15,13 +15,13 @@ const CreateView = ({ history }) => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const redirect = '/feed';
+  const redirect = location.search ? location.search.split('=')[1] : '/feed';
 
   useEffect(() => {
     if (!userInfo) {
       history.push('/feed');
     } else if (!userInfo.isAdmin) {
-      history.push('feed');
+      history.push(redirect);
     }
   });
 
@@ -56,9 +56,9 @@ const CreateView = ({ history }) => {
           <Form.Control
             required
             type='text'
-            placeholder='Enter a title less than 100 characters'
+            placeholder='Enter a title less than 75 characters'
             value={name}
-            maxLength={100}
+            maxLength={75}
             onChange={(e) => setName(e.target.value)}
           ></Form.Control>
         </Form.Group>
@@ -70,7 +70,7 @@ const CreateView = ({ history }) => {
             type='text'
             placeholder='Hook the reader in less than 50 characters'
             value={byline}
-            maxLength={50}
+            maxLength={75}
             onChange={(e) => setByline(e.target.value)}
           ></Form.Control>
         </Form.Group>

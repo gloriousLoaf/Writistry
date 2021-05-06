@@ -30,7 +30,7 @@ const Header = () => {
           <Navbar.Collapse id='basic-navbar-nav'>
             <Nav className='ml-auto'>
               {userInfo ? (
-                <NavDropdown title={userInfo.name} id='username'>
+                <NavDropdown alignRight title={userInfo.name} id='username'>
                   <NavDropdown.Item onClick={logoutHandler}>
                     Sign Out
                   </NavDropdown.Item>
@@ -43,7 +43,7 @@ const Header = () => {
                 </LinkContainer>
               )}
               {userInfo && userInfo.isAdmin && (
-                <NavDropdown title='Admin Tasks' id='adminMenu'>
+                <NavDropdown alignRight title='Admin Tasks' id='adminMenu'>
                   <LinkContainer to='/admin/create'>
                     <NavDropdown.Item>Create Blogpost</NavDropdown.Item>
                   </LinkContainer>

@@ -20,12 +20,12 @@ const HomeView = () => {
         </Col>
         <Col xs={12} md={8} className='my-2'>
           <p>
-            A blog about coding, tech and developer life by{' '}
-            <strong>David Metcalf</strong>.
+            A blog by <strong>David Metcalf</strong> about coding, tech, and
+            developer life.
           </p>
           <p>
             I am a web dev sharing helpful tips and explainers on all things
-            full-stack.
+            full stack.
           </p>
           <p>
             Sometimes that means digging into some code. Other times, it's about

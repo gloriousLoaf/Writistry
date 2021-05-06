@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import store from './store';
-// bootswatch.com litera theme
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
