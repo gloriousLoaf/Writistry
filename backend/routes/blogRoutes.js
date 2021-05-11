@@ -10,11 +10,7 @@ import { isAdmin } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-router
-  .route('/')
-  .get(getBlogs)
-  .post(isAdmin, createBlog)
-  .put(isAdmin, updateBlogById);
-router.route('/:id').get(getBlogById);
+router.route('/').get(getBlogs).post(isAdmin, createBlog);
+router.route('/:id').get(getBlogById).put(updateBlogById);
 
 export default router;

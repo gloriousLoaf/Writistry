@@ -19,7 +19,7 @@ const CreateView = ({ location, history }) => {
 
   useEffect(() => {
     if (!userInfo) {
-      history.push('/feed');
+      history.push(redirect);
     } else if (!userInfo.isAdmin) {
       history.push(redirect);
     }
@@ -27,7 +27,7 @@ const CreateView = ({ location, history }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(createPost(userInfo.isAdmin, `# ${name}`, byline, content));
+    dispatch(createPost(`# ${name}`, byline, content));
     history.push(redirect);
   };
 

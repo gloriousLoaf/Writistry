@@ -1,12 +1,12 @@
 /* BLOG POST VIEW */
 import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import ReactMarkdown from 'react-markdown';
 import ShareLink from 'react-twitter-share-link';
 import { getPostById } from '../actions/blogActions';
 import Wrapper from '../components/Wrapper';
 import { dateFix, titleFix } from '../helpers/helpers';
-import { Link } from 'react-router-dom';
 
 const BlogView = ({ match }) => {
   const dispatch = useDispatch();
@@ -36,7 +36,7 @@ const BlogView = ({ match }) => {
           <hr />
           <ReactMarkdown children={blogpost.content} className='my-4' />
           <hr />
-          {userInfo ? (
+          {userInfo && blogpost ? (
             <div className='my-5'>
               <p>
                 <span className='font-weight-bold'>Share this on Twitter</span>{' '}

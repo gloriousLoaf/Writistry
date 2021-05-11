@@ -97,20 +97,28 @@ export const createPost = (userInfo, name, byline, content) => async (
 };
 
 // UPDATE
-export const updatePost = (name, byline, content) => async (dispatch) => {
+export const updatePost = (id, name, byline, content) => async (
+  dispatch,
+  getState
+) => {
   try {
     dispatch({
       type: BLOG_UPDATE_REQUEST,
     });
 
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
     const config = {
       headers: {
+        Authorization: `Bearer ${userInfo.token}`,
         'Content-Type': 'application/json',
       },
     };
 
-    const { data } = await axios.post(
-      '/api/blogs',
+    const { data } = await axios.put(
+      `/api/blogs/${id}`,
       { name, byline, content },
       config
     );
