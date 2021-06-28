@@ -1,8 +1,8 @@
-/* EDIT BLOG POST VIEW */
+/* EDIT BLOG POST VIEW - ADMIN */
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, Modal } from 'react-bootstrap';
 import Wrapper from '../components/Wrapper';
 import { updatePost } from '../actions/blogActions';
 import { titleFix } from '../helpers/helpers';
@@ -11,6 +11,7 @@ const EditView = ({ match, location, history }) => {
   const [name, setName] = useState('');
   const [byline, setByline] = useState('');
   const [content, setContent] = useState('');
+  const [showModal, setShowModal] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -47,6 +48,18 @@ const EditView = ({ match, location, history }) => {
         history.push(redirect);
       }
     );
+  };
+
+  const deleteModalShowHandler = () => {
+    setShowModal(true);
+  };
+
+  const deleteModalCloseHandler = () => {
+    setShowModal(false);
+  };
+
+  const deletePostHandler = () => {
+    console.log('delete me');
   };
 
   return (
@@ -108,9 +121,38 @@ const EditView = ({ match, location, history }) => {
             <Button type='submit' variant='danger'>
               Submit
             </Button>
+            <Button
+              className='ml-3'
+              variant='outline-danger'
+              onClick={deleteModalShowHandler}
+            >
+              Delete
+            </Button>
           </Form>
         </Wrapper>
       )}
+
+      <Modal show={showModal} onHide={deleteModalCloseHandler} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Are you sure?</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <p>
+            This post will be <b>deleted from our servers forever</b>.<br></br>
+            Make sure you have a backup for your archives.
+          </p>
+        </Modal.Body>
+
+        <Modal.Footer className='d-flex justify-content-center'>
+          <Button variant='danger' onClick={deletePostHandler}>
+            Delete Forever
+          </Button>
+          <Button variant='outline-danger' onClick={deleteModalCloseHandler}>
+            Back to Editor
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };
