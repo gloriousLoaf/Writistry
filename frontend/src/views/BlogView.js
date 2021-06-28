@@ -6,7 +6,7 @@ import ReactMarkdown from 'react-markdown';
 import ShareLink from 'react-twitter-share-link';
 import { getPostById } from '../actions/blogActions';
 import Wrapper from '../components/Wrapper';
-import { dateFix, titleFix } from '../helpers/helpers';
+import { dateFix } from '../helpers/helpers';
 
 const BlogView = ({ match }) => {
   const dispatch = useDispatch();
@@ -27,7 +27,7 @@ const BlogView = ({ match }) => {
     <>
       {blogpost && blogpost.createdAt ? (
         <Wrapper>
-          <ReactMarkdown children={blogpost.name} />
+          <ReactMarkdown children={`# ${blogpost.name}`} />
           <ReactMarkdown children={`_${blogpost.byline}_`} />
           <ReactMarkdown
             children={dateFix(blogpost.createdAt)}
@@ -44,14 +44,12 @@ const BlogView = ({ match }) => {
               </p>
               <ShareLink
                 className='my-5'
-                text={`Check out this blog post by @davidmcodes - "${titleFix(
-                  blogpost.name
-                )}"`}
+                text={`Check out this blog post by @davidmcodes - "${blogpost.name}"`}
                 link={link}
               >
                 {(link) => (
                   <a href={link} target='_blank' rel='noreferrer'>
-                    {titleFix(blogpost.name)}
+                    {blogpost.name}
                   </a>
                 )}
               </ShareLink>
@@ -71,10 +69,7 @@ const BlogView = ({ match }) => {
       ) : (
         <>
           <h1>Loading...</h1>
-          <p>
-            Could not reach the database. Or the author just needs to get to
-            work!
-          </p>
+          <p>Trying to reach the database.</p>
         </>
       )}
     </>

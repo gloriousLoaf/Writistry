@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button, Form, Modal } from 'react-bootstrap';
 import Wrapper from '../components/Wrapper';
 import { updatePost } from '../actions/blogActions';
-import { titleFix } from '../helpers/helpers';
 
 const EditView = ({ match, location, history }) => {
   const [name, setName] = useState('');
@@ -43,11 +42,9 @@ const EditView = ({ match, location, history }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(updatePost(match.params.id, `# ${name}`, byline, content)).then(
-      () => {
-        history.push(redirect);
-      }
-    );
+    dispatch(updatePost(match.params.id, name, byline, content)).then(() => {
+      history.push(redirect);
+    });
   };
 
   const deleteModalShowHandler = () => {
@@ -87,7 +84,7 @@ const EditView = ({ match, location, history }) => {
                 required
                 type='text'
                 placeholder='Enter a title less than 75 characters'
-                defaultValue={titleFix(name)}
+                defaultValue={name}
                 maxLength={75}
                 onChange={(e) => setName(e.target.value)}
               ></Form.Control>
@@ -139,9 +136,9 @@ const EditView = ({ match, location, history }) => {
 
         <Modal.Body>
           <p>
-            This post will be <b>deleted from our servers forever</b>.<br></br>
-            Make sure you have a backup for your archives.
+            This post will be <b>deleted from our servers forever</b>.
           </p>
+          <p>Make sure you have a backup for your archives.</p>
         </Modal.Body>
 
         <Modal.Footer className='d-flex justify-content-center'>

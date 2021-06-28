@@ -60,85 +60,83 @@ export const getPostById = (id) => async (dispatch) => {
 };
 
 // CREATE
-export const createPost = (userInfo, name, byline, content) => async (
-  dispatch
-) => {
-  try {
-    dispatch({
-      type: BLOG_CREATE_REQUEST,
-    });
+export const createPost =
+  (userInfo, name, byline, content) => async (dispatch) => {
+    try {
+      dispatch({
+        type: BLOG_CREATE_REQUEST,
+      });
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-        'Content-Type': 'application/json',
-      },
-    };
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+          'Content-Type': 'application/json',
+        },
+      };
 
-    const { data } = await axios.post(
-      '/api/blogs',
-      { userInfo, name, byline, content },
-      config
-    );
+      const { data } = await axios.post(
+        '/api/blogs',
+        { userInfo, name, byline, content },
+        config
+      );
 
-    dispatch({
-      type: BLOG_CREATE_SUCCESS,
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: BLOG_CREATE_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
-  }
-};
+      dispatch({
+        type: BLOG_CREATE_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: BLOG_CREATE_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 
 // UPDATE
-export const updatePost = (id, name, byline, content) => async (
-  dispatch,
-  getState
-) => {
-  try {
-    dispatch({
-      type: BLOG_UPDATE_REQUEST,
-    });
+export const updatePost =
+  (id, name, byline, content) => async (dispatch, getState) => {
+    try {
+      console.log('fixing stuff', id, name, byline, content);
+      dispatch({
+        type: BLOG_UPDATE_REQUEST,
+      });
 
-    const {
-      userLogin: { userInfo },
-    } = getState();
+      const {
+        userLogin: { userInfo },
+      } = getState();
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-        'Content-Type': 'application/json',
-      },
-    };
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+          'Content-Type': 'application/json',
+        },
+      };
 
-    const { data } = await axios.put(
-      `/api/blogs/${id}`,
-      { name, byline, content },
-      config
-    );
+      const { data } = await axios.put(
+        `/api/blogs/${id}`,
+        { name, byline, content },
+        config
+      );
 
-    dispatch({
-      type: BLOG_UPDATE_SUCCESS,
-      payload: data,
-    });
+      dispatch({
+        type: BLOG_UPDATE_SUCCESS,
+        payload: data,
+      });
 
-    dispatch({
-      type: BLOG_CREATE_SUCCESS,
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: BLOG_UPDATE_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
-  }
-};
+      dispatch({
+        type: BLOG_CREATE_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: BLOG_UPDATE_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };

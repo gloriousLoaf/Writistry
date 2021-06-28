@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card } from 'react-bootstrap';
 import { listPosts } from '../actions/blogActions';
-import { titleFix, dateFix } from '../helpers/helpers';
+import { dateFix } from '../helpers/helpers';
 
 const BlogCard = () => {
   const dispatch = useDispatch();
@@ -28,9 +28,7 @@ const BlogCard = () => {
             <Card key={blogpost._id} className='my-4'>
               <Card.Body>
                 <Link to={`/blogposts/${blogpost._id}`}>
-                  <Card.Title className='mb-2'>
-                    {titleFix(blogpost.name)}
-                  </Card.Title>
+                  <Card.Title className='mb-2'>{blogpost.name}</Card.Title>
                 </Link>
                 <Card.Text>{blogpost.byline}</Card.Text>
                 <Card.Text>{dateFix(blogpost.createdAt)}</Card.Text>
@@ -45,10 +43,7 @@ const BlogCard = () => {
       ) : (
         <>
           <h2>Loading...</h2>
-          <p>
-            Could not reach the database. Or the author just needs to get to
-            work!
-          </p>
+          <p>Trying to reach the database.</p>
         </>
       )}
     </>

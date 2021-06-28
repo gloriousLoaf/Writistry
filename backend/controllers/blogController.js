@@ -66,4 +66,21 @@ const updateBlogById = asyncHandler(async (req, res) => {
   }
 });
 
-export { getBlogs, getBlogById, createBlog, updateBlogById };
+/**
+ * @desc      Delete single blog post
+ * @route     DELETE /api/blogs/:id
+ * @access    Private/Admin
+ */
+const deleteBlogById = asyncHandler(async (req, res) => {
+  const blog = await Blog.findById(req.params.id);
+
+  if (blog) {
+    blog.remove();
+    res.json({ message: 'Blog removed.' });
+  } else {
+    res.status(404);
+    throw new Error('Blog not found.');
+  }
+});
+
+export { getBlogs, getBlogById, createBlog, updateBlogById, deleteBlogById };
