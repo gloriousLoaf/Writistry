@@ -12,6 +12,9 @@ import {
   BLOG_UPDATE_REQUEST,
   BLOG_UPDATE_SUCCESS,
   BLOG_UPDATE_FAIL,
+  BLOG_DELETE_REQUEST,
+  BLOG_DELETE_SUCCESS,
+  BLOG_DELETE_FAIL,
 } from '../constants/blogConstants';
 import axios from 'axios';
 
@@ -140,3 +143,36 @@ export const updatePost =
       });
     }
   };
+
+// DELETE
+export const deletePost = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: BLOG_DELETE_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    await axios.delete(`/api/blogs/${id}`, config);
+
+    dispatch({
+      type: BLOG_DELETE_SUCCESS,
+    });
+  } catch (error) {
+    dispatch({
+      type: BLOG_DELETE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};

@@ -7,6 +7,7 @@ import {
   blogByIdReducer,
   blogCreateReducer,
   blogUpdateReducer,
+  blogDeleteReducer,
 } from './reducers/blogReducers';
 
 const reducer = combineReducers({
@@ -16,6 +17,7 @@ const reducer = combineReducers({
   blogById: blogByIdReducer,
   blogCreate: blogCreateReducer,
   blogUpdate: blogUpdateReducer,
+  blogDelete: blogDeleteReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem('userInfo')

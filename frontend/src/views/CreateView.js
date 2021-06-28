@@ -27,8 +27,9 @@ const CreateView = ({ location, history }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(createPost(name, byline, content));
-    history.push(redirect);
+    dispatch(createPost(userInfo, name, byline, content)).then(() => {
+      history.push(redirect);
+    });
   };
 
   return (

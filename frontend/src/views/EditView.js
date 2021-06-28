@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Form, Modal } from 'react-bootstrap';
 import Wrapper from '../components/Wrapper';
-import { updatePost } from '../actions/blogActions';
+import { updatePost, deletePost } from '../actions/blogActions';
 
 const EditView = ({ match, location, history }) => {
   const [name, setName] = useState('');
@@ -56,7 +56,9 @@ const EditView = ({ match, location, history }) => {
   };
 
   const deletePostHandler = () => {
-    console.log('delete me');
+    dispatch(deletePost(match.params.id)).then(() => {
+      history.push(redirect);
+    });
   };
 
   return (

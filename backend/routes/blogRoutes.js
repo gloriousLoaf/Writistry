@@ -11,7 +11,7 @@ import { protect, isAdmin } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-router.route('/').get(getBlogs).post(isAdmin, createBlog);
+router.route('/').get(getBlogs).post(protect, isAdmin, createBlog);
 router
   .route('/:id')
   .get(getBlogById)
