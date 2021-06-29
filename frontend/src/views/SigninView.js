@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Form, Button, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Wrapper from '../components/Wrapper';
+import Message from '../components/Message';
 import { login } from '../actions/userActions';
 
 const SigninView = ({ location, history }) => {
@@ -12,7 +13,7 @@ const SigninView = ({ location, history }) => {
 
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
+  const { userInfo, error } = userLogin;
 
   const redirect = location.search ? location.search.split('=')[1] : '/feed';
 
@@ -28,6 +29,11 @@ const SigninView = ({ location, history }) => {
 
   return (
     <Wrapper>
+      {error && (
+        <Message variant='danger'>
+          Could not find a user account with those credentials.
+        </Message>
+      )}
       <Col xs={12} md={8}>
         <h2>Sign In</h2>
       </Col>
