@@ -22,8 +22,8 @@ const App = () => {
         <Route path='/signin' component={SigninView} exact />
         <Route path='/feed' component={FeedView} exact />
         <Route path='/blogposts/:id' component={BlogView} exact />
-        <Route path='/admin/create' component={CreateView} exact />
-        <Route path='/admin/edit/:id' component={EditView} />
+        <Route path='/create' component={CreateView} exact />
+        <Route path='/edit/:id' component={EditView} />
       </Container>
     </Router>
   );

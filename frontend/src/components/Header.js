@@ -2,7 +2,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
-import { Container, Navbar, Nav, NavDropdown } from 'react-bootstrap';
+import { Container, Navbar, Nav } from 'react-bootstrap';
 import { logout } from '../actions/userActions';
 
 const Header = () => {
@@ -24,24 +24,24 @@ const Header = () => {
             </span>
           </LinkContainer>
           <Navbar.Toggle
-            aria-controls='basic-navbar-nav'
+            aria-controls='navbar-toggle'
             className='rounded-0'
+            aria-label='Menu'
           />
-          <Navbar.Collapse id='basic-navbar-nav'>
+          <Navbar.Collapse id='navbar-toggle'>
             <Nav className='ml-auto'>
               {userInfo ? (
-                <NavDropdown
-                  alignRight
-                  title={<span className='text-dark'>{userInfo.name}</span>}
-                  id='username'
-                >
-                  <LinkContainer to='/admin/create'>
-                    <NavDropdown.Item>Create Post</NavDropdown.Item>
+                <>
+                  <LinkContainer to='/profile' className='text-dark'>
+                    <Nav.Link>Profile</Nav.Link>
                   </LinkContainer>
-                  <NavDropdown.Item onClick={logoutHandler}>
-                    Sign Out
-                  </NavDropdown.Item>
-                </NavDropdown>
+                  <LinkContainer to='/create' className='text-dark'>
+                    <Nav.Link>Create Post</Nav.Link>
+                  </LinkContainer>
+                  <LinkContainer to='/'>
+                    <Nav.Link onClick={logoutHandler}>Sign Out</Nav.Link>
+                  </LinkContainer>
+                </>
               ) : (
                 <LinkContainer to='/signin'>
                   <Nav.Link>Sign In</Nav.Link>

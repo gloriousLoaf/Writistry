@@ -38,6 +38,11 @@ a:focus {
   text-decoration: underline;
 }
 
+a.navbar-brand:hover,
+a.navbar-brand:focus {
+  text-decoration: underline var(--red);
+}
+
 button,
 .to-feed {
   transition: all 0.3s ease !important;

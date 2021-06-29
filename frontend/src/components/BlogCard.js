@@ -36,7 +36,7 @@ const BlogCard = () => {
                 <Card.Text>{dateFix(blogpost.createdAt)}</Card.Text>
                 {userInfo && userInfo._id === blogpost.authorId && (
                   <div className='d-flex flex-row-reverse'>
-                    <Link to={`./admin/edit/${blogpost._id}`}>Edit</Link>
+                    <Link to={`./edit/${blogpost._id}`}>Edit</Link>
                   </div>
                 )}
               </Card.Body>

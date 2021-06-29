@@ -67,7 +67,7 @@ const EditView = ({ match, location, history }) => {
           <p>
             Changes will not be saved until you submit them. For more details on
             blogging with markdown, head to the{' '}
-            <Link to={'/admin/create'}>Create Blogpost page</Link> or go here to{' '}
+            <Link to={'/create'}>Create Blogpost page</Link> or go here to{' '}
             <a
               href='https://www.markdownguide.org/basic-syntax/'
               target='_blank'
