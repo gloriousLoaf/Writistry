@@ -9,27 +9,36 @@ const HomeView = () => {
   return (
     <Wrapper>
       <h1>Welcome to Writistry</h1>
+      {/* <h2 className='h5'>Write - Publish - Read</h2> */}
       <Row className='my-4'>
         <Col xs={12} md={4} className='my-2 text-center'>
-          <Image
-            src='./images/metcalf.png'
-            className='selfie'
-            roundedCircle
-            fluid
-          />
+          <Image src='./logo512.png' className='selfie' fluid />
         </Col>
         <Col xs={12} md={8} className='my-2'>
           <p>
-            A blog by <strong>David Metcalf</strong> about coding, tech, and
-            developer life.
+            Writistry is a place for developers, designers and tech writers to
+            create and share. Whether you choose to create full blog posts or
+            share short thoughts with the public, this platform empowers you to
+            write, read and save your favorite content.
           </p>
           <p>
-            I am a web dev sharing helpful tips and explainers on all things
-            full stack.
+            When you join Writistry, you get access to your own simple content
+            management system with <strong>Markdown support</strong>. Create
+            your posts in the CMS, or copy and paste them in from your preferred
+            authoring environment. The choice is yours.
           </p>
           <p>
-            Sometimes that means digging into some code. Other times, it's about
-            work-life balance or what I'm reading at the moment.
+            Please see the <Link to='/terms'>Terms &#38; Conditions</Link>{' '}
+            before contributing to this platform. For development-related
+            issues, please visit the{' '}
+            <a
+              target='_blank'
+              rel='noreferrer'
+              href='https://gitub.com/gloriousLoaf/Writistry'
+            >
+              GitHub repo
+            </a>
+            . This is your community too, so jump in and contribute!
           </p>
         </Col>
       </Row>

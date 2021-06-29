@@ -48,11 +48,11 @@ const SignupView = ({ location, history }) => {
           <Form.Group controlId='name'>
             <Form.Label>Name</Form.Label>
             <Form.Control
-              id='name'
               type='name'
               placeholder='Enter name'
               value={name}
               onChange={(e) => setName(e.target.value)}
+              required
             ></Form.Control>
           </Form.Group>
 
@@ -63,6 +63,7 @@ const SignupView = ({ location, history }) => {
               placeholder='Enter email'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
             ></Form.Control>
           </Form.Group>
 
@@ -73,6 +74,8 @@ const SignupView = ({ location, history }) => {
               placeholder='Enter password'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              minLength='8'
+              required
             ></Form.Control>
           </Form.Group>
 
@@ -83,7 +86,17 @@ const SignupView = ({ location, history }) => {
               placeholder='Confirm password'
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
+              minLength='8'
+              required
             ></Form.Control>
+          </Form.Group>
+          <Form.Group controlId='agreeToTerms'>
+            <Form.Check type='checkbox'>
+              <Form.Check.Input required />
+              <Form.Check.Label>
+                I agree to the <Link to='/terms'>Terms and Conditions</Link>
+              </Form.Check.Label>
+            </Form.Check>
           </Form.Group>
           <Button type='submit' variant='danger'>
             Create Account

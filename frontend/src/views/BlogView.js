@@ -60,8 +60,7 @@ const BlogView = ({ match }) => {
               <p>
                 <span className='font-weight-bold'>
                   Sign In to share this on Twitter
-                </span>{' '}
-                - I would be so grateful!
+                </span>
               </p>
               <Link to={'/signin'}>Sign In</Link>
             </div>
