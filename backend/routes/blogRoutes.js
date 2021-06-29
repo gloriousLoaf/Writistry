@@ -11,11 +11,11 @@ import { protect, isAdmin } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-router.route('/').get(getBlogs).post(protect, isAdmin, createBlog);
+router.route('/').get(getBlogs).post(protect, createBlog);
 router
   .route('/:id')
   .get(getBlogById)
-  .put(protect, isAdmin, updateBlogById)
-  .delete(protect, isAdmin, deleteBlogById);
+  .put(protect, updateBlogById)
+  .delete(protect, deleteBlogById);
 
 export default router;

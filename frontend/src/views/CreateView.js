@@ -20,8 +20,6 @@ const CreateView = ({ location, history }) => {
   useEffect(() => {
     if (!userInfo) {
       history.push(redirect);
-    } else if (!userInfo.isAdmin) {
-      history.push(redirect);
     }
   });
 

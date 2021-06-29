@@ -13,6 +13,7 @@ const BlogCard = () => {
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+  console.log('userInfo: ', userInfo);
 
   useEffect(() => {
     dispatch(listPosts());
@@ -33,7 +34,7 @@ const BlogCard = () => {
                 <Card.Text>{blogpost.byline}</Card.Text>
                 <Card.Text>by {blogpost.author}</Card.Text>
                 <Card.Text>{dateFix(blogpost.createdAt)}</Card.Text>
-                {userInfo && userInfo.isAdmin && (
+                {userInfo && userInfo._id === blogpost.authorId && (
                   <div className='d-flex flex-row-reverse'>
                     <Link to={`./admin/edit/${blogpost._id}`}>Edit</Link>
                   </div>

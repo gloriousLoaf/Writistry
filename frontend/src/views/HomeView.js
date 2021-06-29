@@ -28,9 +28,9 @@ const HomeView = () => {
             authoring environment. The choice is yours.
           </p>
           <p>
-            Please see the <Link to='/terms'>Terms &#38; Conditions</Link>{' '}
-            before contributing to this platform. For development-related
-            issues, please visit the{' '}
+            Please see the <Link to='/terms'>Terms and Conditions</Link> before
+            contributing to this platform. For development-related issues,
+            please visit the{' '}
             <a
               target='_blank'
               rel='noreferrer'

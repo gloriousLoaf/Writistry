@@ -30,11 +30,11 @@ const getBlogById = asyncHandler(async (req, res) => {
 /**
  * @desc      Create a blog
  * @route     POST /api/blogs
- * @access    Private/Admin
+ * @access    Private/Auth'd Users
  */
 const createBlog = asyncHandler(async (req, res) => {
   const blog = new Blog({
-    author: req.body.name,
+    author: req.body.author,
     name: req.body.name,
     byline: req.body.byline,
     content: req.body.content,
@@ -47,7 +47,7 @@ const createBlog = asyncHandler(async (req, res) => {
 /**
  * @desc      Update a blog
  * @route     PUT /api/blogs/:id
- * @access    Private/Admin
+ * @access    Private/Auth'd Users
  */
 const updateBlogById = asyncHandler(async (req, res) => {
   const { author, name, byline, content } = req.body;
@@ -71,7 +71,7 @@ const updateBlogById = asyncHandler(async (req, res) => {
 /**
  * @desc      Delete single blog post
  * @route     DELETE /api/blogs/:id
- * @access    Private/Admin
+ * @access    Private/Auth'd Users
  */
 const deleteBlogById = asyncHandler(async (req, res) => {
   const blog = await Blog.findById(req.params.id);

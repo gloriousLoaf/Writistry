@@ -35,18 +35,16 @@ const Header = () => {
                   title={<span className='text-dark'>{userInfo.name}</span>}
                   id='username'
                 >
+                  <LinkContainer to='/admin/create'>
+                    <NavDropdown.Item>Create Post</NavDropdown.Item>
+                  </LinkContainer>
                   <NavDropdown.Item onClick={logoutHandler}>
                     Sign Out
                   </NavDropdown.Item>
-                  {userInfo && userInfo.isAdmin && (
-                    <LinkContainer to='/admin/create'>
-                      <NavDropdown.Item>Create Blogpost</NavDropdown.Item>
-                    </LinkContainer>
-                  )}
                 </NavDropdown>
               ) : (
                 <LinkContainer to='/signin'>
-                  <Nav.Link className='text-dark'>Sign In</Nav.Link>
+                  <Nav.Link>Sign In</Nav.Link>
                 </LinkContainer>
               )}
             </Nav>

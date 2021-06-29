@@ -25,8 +25,6 @@ const EditView = ({ match, location, history }) => {
   useEffect(() => {
     if (!userInfo) {
       history.push(redirect);
-    } else if (!userInfo.isAdmin) {
-      history.push(redirect);
     }
     const fillData = () => {
       blogposts.forEach((post) => {

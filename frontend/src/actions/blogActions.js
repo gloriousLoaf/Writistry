@@ -81,9 +81,12 @@ export const createPost =
         },
       };
 
+      const author = userInfo.name;
+      console.log('author: ', author);
+
       const { data } = await axios.post(
         '/api/blogs',
-        { userInfo, name, byline, content },
+        { author, name, byline, content },
         config
       );
 
