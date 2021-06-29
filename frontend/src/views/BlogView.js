@@ -29,6 +29,7 @@ const BlogView = ({ match }) => {
         <Wrapper>
           <ReactMarkdown children={`# ${blogpost.name}`} />
           <ReactMarkdown children={`_${blogpost.byline}_`} />
+          <ReactMarkdown children={`**by ${blogpost.author}**`} />
           <ReactMarkdown
             children={dateFix(blogpost.createdAt)}
             className='small'

@@ -31,6 +31,7 @@ const BlogCard = () => {
                   <Card.Title className='mb-2'>{blogpost.name}</Card.Title>
                 </Link>
                 <Card.Text>{blogpost.byline}</Card.Text>
+                <Card.Text>by {blogpost.author}</Card.Text>
                 <Card.Text>{dateFix(blogpost.createdAt)}</Card.Text>
                 {userInfo && userInfo.isAdmin && (
                   <div className='d-flex flex-row-reverse'>

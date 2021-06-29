@@ -3,6 +3,10 @@ import mongoose from 'mongoose';
 
 const blogSchema = mongoose.Schema(
   {
+    author: {
+      type: String,
+      required: true,
+    },
     name: {
       type: String,
       required: true,

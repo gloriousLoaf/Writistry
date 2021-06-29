@@ -34,6 +34,7 @@ const getBlogById = asyncHandler(async (req, res) => {
  */
 const createBlog = asyncHandler(async (req, res) => {
   const blog = new Blog({
+    author: req.body.name,
     name: req.body.name,
     byline: req.body.byline,
     content: req.body.content,
@@ -49,11 +50,12 @@ const createBlog = asyncHandler(async (req, res) => {
  * @access    Private/Admin
  */
 const updateBlogById = asyncHandler(async (req, res) => {
-  const { name, byline, content } = req.body;
+  const { author, name, byline, content } = req.body;
 
   const blog = await Blog.findById(req.params.id);
 
   if (blog) {
+    blog.author = author;
     blog.name = name;
     blog.byline = byline;
     blog.content = content;

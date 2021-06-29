@@ -7,7 +7,7 @@ const FeedView = () => {
   return (
     <Wrapper>
       <h1>The Feed</h1>
-      <p>Recent posts and thoughts.</p>
+      <p>Recent posts from the community</p>
       <BlogCard />
     </Wrapper>
   );

@@ -64,11 +64,15 @@ export const getPostById = (id) => async (dispatch) => {
 
 // CREATE
 export const createPost =
-  (userInfo, name, byline, content) => async (dispatch) => {
+  (name, byline, content) => async (dispatch, getState) => {
     try {
       dispatch({
         type: BLOG_CREATE_REQUEST,
       });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
 
       const config = {
         headers: {
@@ -102,7 +106,6 @@ export const createPost =
 export const updatePost =
   (id, name, byline, content) => async (dispatch, getState) => {
     try {
-      console.log('fixing stuff', id, name, byline, content);
       dispatch({
         type: BLOG_UPDATE_REQUEST,
       });
@@ -118,9 +121,11 @@ export const updatePost =
         },
       };
 
+      const author = userInfo.name;
+
       const { data } = await axios.put(
         `/api/blogs/${id}`,
-        { name, byline, content },
+        { author, name, byline, content },
         config
       );
 
