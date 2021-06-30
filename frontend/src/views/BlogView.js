@@ -27,6 +27,9 @@ const BlogView = ({ match }) => {
     <>
       {blogpost && blogpost.createdAt ? (
         <Wrapper>
+          {userInfo && userInfo._id === blogpost.authorId && (
+            <Link to={`./edit/${blogpost._id}`}>Edit this post</Link>
+          )}
           <ReactMarkdown children={`# ${blogpost.name}`} />
           <ReactMarkdown children={`_${blogpost.byline}_`} />
           <ReactMarkdown children={`**by ${blogpost.author}**`} />
@@ -40,8 +43,7 @@ const BlogView = ({ match }) => {
           {userInfo && blogpost ? (
             <div className='my-5'>
               <p>
-                <span className='font-weight-bold'>Share this on Twitter</span>{' '}
-                - I would be so grateful!
+                <span className='font-weight-bold'>Share this on Twitter</span>
               </p>
               <ShareLink
                 className='my-5'

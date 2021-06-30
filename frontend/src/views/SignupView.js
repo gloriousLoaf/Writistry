@@ -7,7 +7,7 @@ import Wrapper from '../components/Wrapper';
 import Message from '../components/Message';
 import { register } from '../actions/userActions';
 
-const SignupView = ({ location, history }) => {
+const SignupView = ({ history }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -19,12 +19,10 @@ const SignupView = ({ location, history }) => {
   const userRegister = useSelector((state) => state.userRegister);
   const { userInfo, error } = userRegister;
 
-  const redirect = location.search ? location.search.split('=')[1] : '/feed';
-
   // prevent signed-in users from seeing sign up page
   useEffect(() => {
-    userInfo && history.push(redirect);
-  }, [history, userInfo, redirect]);
+    userInfo && history.push('/');
+  }, [history, userInfo]);
 
   const submitHandler = (e) => {
     e.preventDefault();

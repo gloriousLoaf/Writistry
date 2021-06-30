@@ -30,6 +30,9 @@ const Header = () => {
           />
           <Navbar.Collapse id='navbar-toggle'>
             <Nav className='ml-auto'>
+              <LinkContainer to='/feed' className='text-dark'>
+                <Nav.Link>Feed</Nav.Link>
+              </LinkContainer>
               {userInfo ? (
                 <>
                   <LinkContainer to='/profile' className='text-dark'>

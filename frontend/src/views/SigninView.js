@@ -7,7 +7,7 @@ import Wrapper from '../components/Wrapper';
 import Message from '../components/Message';
 import { login } from '../actions/userActions';
 
-const SigninView = ({ location, history }) => {
+const SigninView = ({ history }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -15,12 +15,10 @@ const SigninView = ({ location, history }) => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, error } = userLogin;
 
-  const redirect = location.search ? location.search.split('=')[1] : '/feed';
-
   // prevent signed-in users from seeing sign in page
   useEffect(() => {
-    userInfo && history.push(redirect);
-  }, [history, userInfo, redirect]);
+    userInfo && history.push('/feed');
+  }, [history, userInfo]);
 
   const submitHandler = (e) => {
     e.preventDefault();
