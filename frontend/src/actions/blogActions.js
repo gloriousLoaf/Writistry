@@ -82,11 +82,11 @@ export const createPost =
       };
 
       const author = userInfo.name;
-      console.log('author: ', author);
+      const authorId = userInfo._id;
 
       const { data } = await axios.post(
         '/api/blogs',
-        { author, name, byline, content },
+        { author, authorId, name, byline, content },
         config
       );
 
@@ -94,6 +94,8 @@ export const createPost =
         type: BLOG_CREATE_SUCCESS,
         payload: data,
       });
+
+      return data;
     } catch (error) {
       dispatch({
         type: BLOG_CREATE_FAIL,
@@ -141,6 +143,8 @@ export const updatePost =
         type: BLOG_CREATE_SUCCESS,
         payload: data,
       });
+
+      return data;
     } catch (error) {
       dispatch({
         type: BLOG_UPDATE_FAIL,

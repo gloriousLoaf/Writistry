@@ -35,6 +35,7 @@ const getBlogById = asyncHandler(async (req, res) => {
 const createBlog = asyncHandler(async (req, res) => {
   const blog = new Blog({
     author: req.body.author,
+    authorId: req.body.authorId,
     name: req.body.name,
     byline: req.body.byline,
     content: req.body.content,

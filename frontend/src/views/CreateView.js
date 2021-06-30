@@ -5,7 +5,7 @@ import { Button, Form } from 'react-bootstrap';
 import Wrapper from '../components/Wrapper';
 import { createPost } from '../actions/blogActions';
 
-const CreateView = ({ location, history }) => {
+const CreateView = ({ history }) => {
   const [name, setName] = useState('');
   const [byline, setByline] = useState('');
   const [content, setContent] = useState('');
@@ -15,18 +15,16 @@ const CreateView = ({ location, history }) => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const redirect = location.search ? location.search.split('=')[1] : '/feed';
-
   useEffect(() => {
     if (!userInfo) {
-      history.push(redirect);
+      history.push('/feed');
     }
   });
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(createPost(name, byline, content)).then(() => {
-      history.push(redirect);
+    dispatch(createPost(name, byline, content)).then((data) => {
+      history.push(`/blogposts/${data._id}`);
     });
   };
 
@@ -40,7 +38,7 @@ const CreateView = ({ location, history }) => {
           target='_blank'
           rel='noreferrer'
         >
-          simple markdown syntax.
+          basic Markdown syntax.
         </a>{' '}
         The <strong>Title</strong> and <strong>Byline</strong> inputs will be
         automatically formatted for you. The <strong>Content</strong> textarea

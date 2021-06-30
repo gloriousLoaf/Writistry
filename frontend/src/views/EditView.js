@@ -6,7 +6,7 @@ import { Button, Form, Modal } from 'react-bootstrap';
 import Wrapper from '../components/Wrapper';
 import { updatePost, deletePost } from '../actions/blogActions';
 
-const EditView = ({ match, location, history }) => {
+const EditView = ({ match, history }) => {
   const [name, setName] = useState('');
   const [byline, setByline] = useState('');
   const [content, setContent] = useState('');
@@ -20,11 +20,9 @@ const EditView = ({ match, location, history }) => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const redirect = location.search ? location.search.split('=')[1] : '/feed';
-
   useEffect(() => {
     if (!userInfo) {
-      history.push(redirect);
+      history.push('/feed');
     }
     const fillData = () => {
       blogposts.forEach((post) => {
@@ -36,13 +34,15 @@ const EditView = ({ match, location, history }) => {
       });
     };
     fillData();
-  }, [userInfo, history, redirect, blogposts, match]);
+  }, [userInfo, history, blogposts, match]);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(updatePost(match.params.id, name, byline, content)).then(() => {
-      history.push(redirect);
-    });
+    dispatch(updatePost(match.params.id, name, byline, content)).then(
+      (data) => {
+        history.push(`/blogposts/${data._id}`);
+      }
+    );
   };
 
   const deleteModalShowHandler = () => {
@@ -55,7 +55,7 @@ const EditView = ({ match, location, history }) => {
 
   const deletePostHandler = () => {
     dispatch(deletePost(match.params.id)).then(() => {
-      history.push(redirect);
+      history.push('/feed');
     });
   };
 
