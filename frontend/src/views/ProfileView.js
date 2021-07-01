@@ -7,7 +7,7 @@ import BlogCard from '../components/BlogCard';
 import { getUserProfileById } from '../actions/userActions';
 import { dateFix } from '../helpers/helpers';
 
-const ProfileView = ({ match, location }) => {
+const ProfileView = ({ match }) => {
   const dispatch = useDispatch();
 
   const userProfile = useSelector((state) => state.userProfile);
