@@ -1,7 +1,11 @@
 /* STORE */
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import { userLoginReducer, userRegisterReducer } from './reducers/userReducers';
+import {
+  userLoginReducer,
+  userRegisterReducer,
+  userProfileReducer,
+} from './reducers/userReducers';
 import {
   blogListReducer,
   blogByIdReducer,
@@ -13,6 +17,7 @@ import {
 const reducer = combineReducers({
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
+  userProfile: userProfileReducer,
   blogList: blogListReducer,
   blogById: blogByIdReducer,
   blogCreate: blogCreateReducer,

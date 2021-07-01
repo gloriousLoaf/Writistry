@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Form } from 'react-bootstrap';
 import Wrapper from '../components/Wrapper';
-import { createPost } from '../actions/blogActions';
+import { createBlog } from '../actions/blogActions';
 
 const CreateView = ({ history }) => {
   const [name, setName] = useState('');
@@ -23,7 +23,7 @@ const CreateView = ({ history }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(createPost(name, byline, content)).then((data) => {
+    dispatch(createBlog(name, byline, content)).then((data) => {
       history.push(`/blogposts/${data._id}`);
     });
   };

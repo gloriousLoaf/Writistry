@@ -11,7 +11,7 @@ import User from '../models/userModel.js';
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email }).select('+password');
 
   // if user exists & password match
   if (user && (await user.matchPassword(password))) {
@@ -66,19 +66,14 @@ const registerUser = asyncHandler(async (req, res) => {
 
 /**
  * @desc      Get user profile
- * @route     GET /api/users/profile
- * @access    Private
+ * @route     GET /api/users/profile/:id
+ * @access    Public
  */
 const getUserProfile = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id);
+  const user = await User.findById(req.params.id).populate('blogposts');
 
   if (user) {
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
-    });
+    res.json(user);
   } else {
     res.status(404);
     throw new Error('User not found.');
@@ -140,13 +135,14 @@ const deleteUser = asyncHandler(async (req, res) => {
   }
 });
 
+// UNUSED
 /**
  * @desc      Get a user by id
  * @route     GET /api/users/:id
  * @access    Private/Admin
  */
 const getUserById = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params.id).select('-password');
+  const user = await User.findById(req.params.id);
 
   if (user) {
     res.json(user);
@@ -156,6 +152,7 @@ const getUserById = asyncHandler(async (req, res) => {
   }
 });
 
+// UNUSED
 /**
  * @desc      Update user
  * @route     PUT /api/users/:id

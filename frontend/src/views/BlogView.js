@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import ReactMarkdown from 'react-markdown';
 import ShareLink from 'react-twitter-share-link';
-import { getPostById } from '../actions/blogActions';
+import { getBlogById } from '../actions/blogActions';
 import Wrapper from '../components/Wrapper';
 import { dateFix } from '../helpers/helpers';
 
@@ -18,7 +18,7 @@ const BlogView = ({ match }) => {
   const { userInfo } = userLogin;
 
   useEffect(() => {
-    dispatch(getPostById(match.params.id));
+    dispatch(getBlogById(match.params.id));
   }, [dispatch, match]);
 
   const link = window.location.href;
@@ -28,7 +28,7 @@ const BlogView = ({ match }) => {
       {blogpost && blogpost.createdAt ? (
         <Wrapper>
           {userInfo && userInfo._id === blogpost.authorId && (
-            <Link to={`./edit/${blogpost._id}`}>Edit this post</Link>
+            <Link to={`/edit/${blogpost._id}`}>Edit this post</Link>
           )}
           <ReactMarkdown children={`# ${blogpost.name}`} />
           <ReactMarkdown children={`_${blogpost.byline}_`} />

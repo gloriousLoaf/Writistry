@@ -28,13 +28,14 @@ const getBlogById = asyncHandler(async (req, res) => {
   }
 });
 
+// UNUSED
 /**
  * @desc      Fetch all blogs by user
  * @route     GET /api/blogs/:authorId
  * @access    Public
  */
-const getPostsByUser = asyncHandler(async (req, res) => {
-  const blog = await Blog.find(req.params.id); ///////////// here, need to rethink this approach...
+const getBlogsByUser = asyncHandler(async (req, res) => {
+  const blog = await Blog.find(req.params.id);
   if (blog) {
     res.json(blog);
   } else {
@@ -112,7 +113,7 @@ const deleteBlogById = asyncHandler(async (req, res) => {
 export {
   getBlogs,
   getBlogById,
-  getPostsByUser,
+  getBlogsByUser,
   createBlog,
   updateBlogById,
   deleteBlogById,

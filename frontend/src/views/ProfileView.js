@@ -1,33 +1,47 @@
 /* HOME VIEW */
 import React, { useEffect } from 'react';
-import Wrapper from '../components/Wrapper';
 import { Col, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { listPosts } from '../actions/blogActions';
-// import { dateFix } from '../helpers/helpers';
+import Wrapper from '../components/Wrapper';
+import BlogCard from '../components/BlogCard';
+import { getUserProfileById } from '../actions/userActions';
+import { dateFix } from '../helpers/helpers';
 
-const ProfileView = () => {
+const ProfileView = ({ match, location }) => {
   const dispatch = useDispatch();
 
-  // const blogList = useSelector((state) => state.blogList);
-  // const { blogposts } = blogList;
+  const userProfile = useSelector((state) => state.userProfile);
+  const { userInfo } = userProfile;
 
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
+  let blogposts;
+  if (userInfo) {
+    blogposts = userInfo.blogposts;
+  }
 
   useEffect(() => {
-    dispatch(listPosts());
-  }, [dispatch]);
+    dispatch(getUserProfileById(match.params.id));
+  }, [dispatch, match]);
 
   return (
     <Wrapper>
-      <h1 className='text-center'>{userInfo.name}</h1>
-      <Row className='my-4'>
-        <Col className='my-2'>
-          {/* TODO: add createdAt to state - userController */}
-          {/* <p>Joined on {dateFix(userInfo.createdAt)}</p> */}
-        </Col>
-      </Row>
+      {userInfo && (
+        <>
+          <h1 className='text-center'>{userInfo.name}</h1>
+          <Row className='my-4'>
+            <Col className='my-2 text-center'>
+              <p>Joined on {dateFix(userInfo.createdAt)}</p>
+              <p>TODO: Add user bio</p>
+            </Col>
+          </Row>
+          {blogposts.length > 0 && (
+            <Row className='my-4'>
+              <Col className='my-2'>
+                <BlogCard blogposts={blogposts} userInfo={userInfo} />
+              </Col>
+            </Row>
+          )}
+        </>
+      )}
     </Wrapper>
   );
 };
