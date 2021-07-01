@@ -35,7 +35,10 @@ const Header = () => {
               </LinkContainer>
               {userInfo ? (
                 <>
-                  <LinkContainer to='/profile' className='text-dark'>
+                  <LinkContainer
+                    to={`/profile/${userInfo._id}`}
+                    className='text-dark'
+                  >
                     <Nav.Link>Profile</Nav.Link>
                   </LinkContainer>
                   <LinkContainer to='/create' className='text-dark'>

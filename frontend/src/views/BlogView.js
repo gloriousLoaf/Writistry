@@ -32,7 +32,9 @@ const BlogView = ({ match }) => {
           )}
           <ReactMarkdown children={`# ${blogpost.name}`} />
           <ReactMarkdown children={`_${blogpost.byline}_`} />
-          <ReactMarkdown children={`**by ${blogpost.author}**`} />
+          <ReactMarkdown
+            children={`**by [${blogpost.author}](/profile/${blogpost.authorId})**`}
+          />
           <ReactMarkdown
             children={dateFix(blogpost.createdAt)}
             className='small'
