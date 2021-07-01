@@ -22,6 +22,13 @@ const userSchema = mongoose.Schema(
       required: true,
       default: false,
     },
+    blogposts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'Blog',
+      },
+    ],
   },
   {
     timestamps: true,

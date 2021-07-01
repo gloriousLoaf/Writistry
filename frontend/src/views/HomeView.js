@@ -9,10 +9,9 @@ const HomeView = () => {
   return (
     <Wrapper>
       <h1>Welcome to Writistry</h1>
-      {/* <h2 className='h5'>Write - Publish - Read</h2> */}
       <Row className='my-4'>
         <Col xs={12} md={4} className='my-2 text-center'>
-          <Image src='./logo512.png' className='selfie' fluid />
+          <Image src='./logo512.png' fluid />
         </Col>
         <Col xs={12} md={8} className='my-2'>
           <p>

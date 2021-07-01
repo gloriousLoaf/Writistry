@@ -13,7 +13,7 @@
  *
  * @example
  * // returns '03-08-2021'
- * dateFix(order.paidAt)
+ * dateFix(blogpost.createdAt)
  */
 export const dateFix = (date) => {
   const yearMonthDay = date.substring(0, 10).split('-');

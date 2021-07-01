@@ -1,6 +1,7 @@
 /* BLOG CONTROLLER */
 import asyncHandler from 'express-async-handler';
 import Blog from '../models/blogModel.js';
+import User from '../models/userModel.js';
 
 /**
  * @desc      Fetch all blogs
@@ -28,6 +29,21 @@ const getBlogById = asyncHandler(async (req, res) => {
 });
 
 /**
+ * @desc      Fetch all blogs by user
+ * @route     GET /api/blogs/:authorId
+ * @access    Public
+ */
+const getPostsByUser = asyncHandler(async (req, res) => {
+  const blog = await Blog.find(req.params.id); ///////////// here, need to rethink this approach...
+  if (blog) {
+    res.json(blog);
+  } else {
+    res.status(404);
+    throw new Error('blog post not found');
+  }
+});
+
+/**
  * @desc      Create a blog
  * @route     POST /api/blogs
  * @access    Private/Auth'd Users
@@ -42,6 +58,13 @@ const createBlog = asyncHandler(async (req, res) => {
   });
 
   const createdblog = await blog.save();
+
+  const user = await User.findById(req.body.authorId);
+
+  if (user) {
+    user.blogposts.push(createdblog._id);
+    const updatedUser = await user.save();
+  }
   res.status(201).json(createdblog);
 });
 
@@ -86,4 +109,11 @@ const deleteBlogById = asyncHandler(async (req, res) => {
   }
 });
 
-export { getBlogs, getBlogById, createBlog, updateBlogById, deleteBlogById };
+export {
+  getBlogs,
+  getBlogById,
+  getPostsByUser,
+  createBlog,
+  updateBlogById,
+  deleteBlogById,
+};

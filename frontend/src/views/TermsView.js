@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Wrapper from '../components/Wrapper';
 import { Col, Row } from 'react-bootstrap';
 
-const HomeView = () => {
+const TermsView = () => {
   return (
     <Wrapper>
       <h1>Terms and Conditions</h1>
@@ -96,4 +96,4 @@ const HomeView = () => {
   );
 };
 
-export default HomeView;
+export default TermsView;

@@ -6,6 +6,9 @@ import {
   BLOG_BY_ID_REQUEST,
   BLOG_BY_ID_SUCCESS,
   BLOG_BY_ID_FAIL,
+  BLOG_BY_USER_REQUEST,
+  BLOG_BY_USER_SUCCESS,
+  BLOG_BY_USER_FAIL,
   BLOG_CREATE_REQUEST,
   BLOG_CREATE_SUCCESS,
   BLOG_CREATE_FAIL,
@@ -54,6 +57,28 @@ export const getPostById = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: BLOG_BY_ID_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+// BY USER
+export const getPostByUser = (authorId) => async (dispatch) => {
+  try {
+    dispatch({ type: BLOG_BY_USER_REQUEST });
+
+    const { data } = await axios.get(`/api/blogs/${authorId}`);
+
+    dispatch({
+      type: BLOG_BY_USER_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: BLOG_BY_USER_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

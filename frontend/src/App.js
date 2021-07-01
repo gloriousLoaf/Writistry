@@ -6,6 +6,7 @@ import HomeView from './views/HomeView';
 import TermsView from './views/TermsView';
 import SignupView from './views/SignupView';
 import SigninView from './views/SigninView';
+import ProfileView from './views/ProfileView';
 import FeedView from './views/FeedView';
 import BlogView from './views/BlogView';
 import CreateView from './views/CreateView';
@@ -20,6 +21,7 @@ const App = () => {
         <Route path='/terms' component={TermsView} exact />
         <Route path='/signup' component={SignupView} exact />
         <Route path='/signin' component={SigninView} exact />
+        <Route path='/profile/:id' component={ProfileView} exact />
         <Route path='/feed' component={FeedView} exact />
         <Route path='/blogposts/:id' component={BlogView} exact />
         <Route path='/create' component={CreateView} exact />
