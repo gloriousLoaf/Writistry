@@ -1,6 +1,7 @@
 /* HOME VIEW */
 import React, { useEffect } from 'react';
 import { Col, Row } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Wrapper from '../components/Wrapper';
 import BlogCard from '../components/BlogCard';
@@ -18,6 +19,9 @@ const ProfileView = ({ match }) => {
     blogposts = userInfo.blogposts;
   }
 
+  // to compare auth'd user vs current profile being viewed
+  const sessionUser = JSON.parse(localStorage.getItem('userInfo'));
+
   useEffect(() => {
     dispatch(getUserProfileById(match.params.id));
   }, [dispatch, match]);
@@ -31,6 +35,9 @@ const ProfileView = ({ match }) => {
             <Col className='my-2 text-center'>
               <p>Joined on {dateFix(userInfo.createdAt)}</p>
               <p>TODO: Add user bio</p>
+              {userInfo._id === sessionUser._id && (
+                <Link to={`/profile/${userInfo._id}/edit`}>Edit Profile</Link>
+              )}
             </Col>
           </Row>
           {blogposts.length > 0 && (

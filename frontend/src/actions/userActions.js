@@ -13,6 +13,9 @@ import {
   USER_UPDATE_REQUEST,
   USER_UPDATE_SUCCESS,
   USER_UPDATE_FAIL,
+  USER_PASSWORD_REQUEST,
+  USER_PASSWORD_SUCCESS,
+  USER_PASSWORD_FAIL,
 } from '../constants/userConstants';
 import axios from 'axios';
 
@@ -124,23 +127,24 @@ export const getUserProfileById = (id) => async (dispatch) => {
 };
 
 // UPDATE PROFILE
-export const updateProfile = (name, email, password) => async (dispatch) => {
+export const updateProfile = (name, email) => async (dispatch, getState) => {
   try {
     dispatch({
       type: USER_UPDATE_REQUEST,
     });
 
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
     const config = {
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
       },
     };
 
-    const { data } = await axios.post(
-      '/api/users',
-      { name, email, password },
-      config
-    );
+    const { data } = await axios.post('/api/users', { name, email }, config);
 
     dispatch({
       type: USER_UPDATE_SUCCESS,
@@ -163,3 +167,51 @@ export const updateProfile = (name, email, password) => async (dispatch) => {
     });
   }
 };
+
+// UPDATE PASSWORD
+export const updatePassword =
+  (currentPassword, newPassword) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: USER_PASSWORD_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      // TODO: create actual axios & compare password on backend
+      const { data } = await axios.post(
+        '/api/users',
+        { currentPassword, newPassword },
+        config
+      );
+
+      dispatch({
+        type: USER_PASSWORD_SUCCESS,
+        payload: data,
+      });
+
+      // dispatch({
+      //   type: USER_LOGIN_SUCCESS,
+      //   payload: data,
+      // });
+
+      localStorage.setItem('userInfo', JSON.stringify(data));
+    } catch (error) {
+      dispatch({
+        type: USER_PASSWORD_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };

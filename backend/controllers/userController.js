@@ -80,12 +80,42 @@ const getUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
+// TODO: create actual controller - update name / email
 /**
  * @desc      Update user profile
- * @route     PUT /api/users/profile
- * @access    Private
+ * @route     PUT /api/users/profile/:id/edit
+ * @access    Private/Auth'd Users
  */
 const updateUserProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    if (req.body.password) {
+      user.password = req.body.password;
+    }
+    const updatedUser = await user.save();
+    res.json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,
+      token: generateToken(updatedUser._id),
+    });
+  } else {
+    res.status(404);
+    throw new Error('User not found.');
+  }
+});
+
+// TODO: create actual controller - compare & update passwords
+/**
+ * @desc      Update user profile
+ * @route     PUT /api/users/profile/:id/edit
+ * @access    Private/Auth'd Users
+ */
+const updateUserPassword = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
 
   if (user) {
@@ -135,7 +165,7 @@ const deleteUser = asyncHandler(async (req, res) => {
   }
 });
 
-// UNUSED
+// UNUSED??
 /**
  * @desc      Get a user by id
  * @route     GET /api/users/:id
@@ -152,7 +182,7 @@ const getUserById = asyncHandler(async (req, res) => {
   }
 });
 
-// UNUSED
+// UNUSED??
 /**
  * @desc      Update user
  * @route     PUT /api/users/:id
@@ -188,6 +218,7 @@ export {
   registerUser,
   getUserProfile,
   updateUserProfile,
+  updateUserPassword,
   getUsers,
   deleteUser,
   getUserById,

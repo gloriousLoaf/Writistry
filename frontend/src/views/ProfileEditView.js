@@ -1,0 +1,170 @@
+/* HOME VIEW */
+import React, { useEffect, useState } from 'react';
+import { Button, Col, Form, Row } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import Wrapper from '../components/Wrapper';
+import {
+  getUserProfileById,
+  updateProfile,
+  updatePassword,
+} from '../actions/userActions';
+import Message from '../components/Message';
+
+const ProfileEditView = ({ match }) => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordMatch, setPasswordMatch] = useState(true);
+
+  const dispatch = useDispatch();
+
+  const userProfile = useSelector((state) => state.userProfile);
+  const { userInfo } = userProfile;
+
+  useEffect(() => {
+    dispatch(getUserProfileById(match.params.id));
+  }, [dispatch, match]);
+
+  const handleInputChange = (key, value) => {
+    switch (key) {
+      case 'name':
+        setName(value);
+        break;
+      case 'email':
+        setEmail(value);
+        break;
+      case 'currentPassword':
+        setCurrentPassword(value);
+        break;
+      case 'newPassword':
+        setNewPassword(value);
+        break;
+      case 'confirmPassword':
+        setConfirmPassword(value);
+        break;
+      default:
+        return;
+    }
+  };
+
+  const submitDetailsHandler = (e) => {
+    e.preventDefault();
+    dispatch(updateProfile(name, email));
+  };
+
+  const submitPasswordHandler = (e) => {
+    e.preventDefault();
+    if (
+      currentPassword === '' ||
+      newPassword === '' ||
+      confirmPassword === ''
+    ) {
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      setPasswordMatch(false);
+    } else {
+      dispatch(updatePassword(currentPassword, newPassword));
+    }
+  };
+
+  return (
+    <Wrapper>
+      <h1>Update Your Profile Details</h1>
+      {passwordMatch === false && (
+        <Message variant='danger'>
+          New Password and Confirm Password fields must match.
+        </Message>
+      )}
+      {userInfo && (
+        <>
+          <Row className='mb-5'>
+            <Col>
+              <Form onSubmit={submitDetailsHandler}>
+                <Form.Group controlId='name'>
+                  <Form.Label>Name</Form.Label>
+                  <Form.Control
+                    type='name'
+                    placeholder={userInfo.name}
+                    value={name}
+                    onChange={(e) => handleInputChange('name', e.target.value)}
+                  ></Form.Control>
+                </Form.Group>
+
+                <Form.Group controlId='email'>
+                  <Form.Label>Email Address</Form.Label>
+                  <Form.Control
+                    type='email'
+                    placeholder={userInfo.email}
+                    value={email}
+                    onChange={(e) => handleInputChange('email', e.target.value)}
+                    required
+                  ></Form.Control>
+                </Form.Group>
+                <Button type='submit' variant='danger'>
+                  Submit Updates
+                </Button>
+              </Form>
+            </Col>
+          </Row>
+
+          <Row className='mb-5'>
+            <Col>
+              <Form onSubmit={submitPasswordHandler}>
+                <Form.Group controlId='currentPassword'>
+                  <h2>Update Password</h2>
+                  <Form.Label>Current Password</Form.Label>
+                  <Form.Control
+                    type='password'
+                    placeholder='Current password'
+                    value={currentPassword}
+                    onChange={(e) =>
+                      handleInputChange('currentPassword', e.target.value)
+                    }
+                    minLength='8'
+                    required
+                  ></Form.Control>
+                </Form.Group>
+
+                <Form.Group controlId='newPassword'>
+                  <Form.Label>New Password</Form.Label>
+                  <Form.Control
+                    type='password'
+                    placeholder='New password'
+                    value={newPassword}
+                    onChange={(e) =>
+                      handleInputChange('newPassword', e.target.value)
+                    }
+                    minLength='8'
+                    required
+                  ></Form.Control>
+                </Form.Group>
+
+                <Form.Group controlId='confirmPassword'>
+                  <Form.Label>Confirm New Password</Form.Label>
+                  <Form.Control
+                    type='password'
+                    placeholder='Confirm new password'
+                    value={confirmPassword}
+                    onChange={(e) =>
+                      handleInputChange('confirmPassword', e.target.value)
+                    }
+                    minLength='8'
+                    required
+                  ></Form.Control>
+                </Form.Group>
+                <Button type='submit' variant='danger'>
+                  Change Password
+                </Button>
+              </Form>
+            </Col>
+          </Row>
+        </>
+      )}
+    </Wrapper>
+  );
+};
+
+export default ProfileEditView;
