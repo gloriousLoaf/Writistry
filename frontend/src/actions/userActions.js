@@ -144,7 +144,11 @@ export const updateProfile = (name, email) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.post('/api/users', { name, email }, config);
+    const { data } = await axios.put(
+      '/api/users/profile/:id',
+      { name, email },
+      config
+    );
 
     dispatch({
       type: USER_UPDATE_SUCCESS,

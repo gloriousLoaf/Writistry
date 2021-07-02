@@ -20,6 +20,13 @@ const EditView = ({ match, history }) => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
+  // prevent users from seeing another user's edit view
+  useEffect(() => {
+    if (!userInfo || userInfo._id !== match.params.id) {
+      history.push('/feed');
+    }
+  }, [match, history, userInfo]);
+
   useEffect(() => {
     if (!userInfo) {
       history.push('/feed');

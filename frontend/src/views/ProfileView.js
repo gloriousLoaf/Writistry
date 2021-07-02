@@ -35,7 +35,7 @@ const ProfileView = ({ match }) => {
             <Col className='my-2 text-center'>
               <p>Joined on {dateFix(userInfo.createdAt)}</p>
               <p>TODO: Add user bio</p>
-              {userInfo._id === sessionUser._id && (
+              {sessionUser && userInfo._id === sessionUser._id && (
                 <Link to={`/profile/${userInfo._id}/edit`}>Edit Profile</Link>
               )}
             </Col>

@@ -7,10 +7,11 @@ import {
   getUserProfileById,
   updateProfile,
   updatePassword,
+  logout,
 } from '../actions/userActions';
 import Message from '../components/Message';
 
-const ProfileEditView = ({ match }) => {
+const ProfileEditView = ({ match, history }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
@@ -23,35 +24,25 @@ const ProfileEditView = ({ match }) => {
   const userProfile = useSelector((state) => state.userProfile);
   const { userInfo } = userProfile;
 
+  // to compare auth'd user vs current profile being viewed
+  const sessionUser = JSON.parse(localStorage.getItem('userInfo'));
+
   useEffect(() => {
     dispatch(getUserProfileById(match.params.id));
   }, [dispatch, match]);
 
-  const handleInputChange = (key, value) => {
-    switch (key) {
-      case 'name':
-        setName(value);
-        break;
-      case 'email':
-        setEmail(value);
-        break;
-      case 'currentPassword':
-        setCurrentPassword(value);
-        break;
-      case 'newPassword':
-        setNewPassword(value);
-        break;
-      case 'confirmPassword':
-        setConfirmPassword(value);
-        break;
-      default:
-        return;
+  // prevent users from seeing another user's edit view
+  useEffect(() => {
+    if (!sessionUser || sessionUser._id !== match.params.id) {
+      history.push('/feed');
     }
-  };
+  }, [match, history, sessionUser]);
 
   const submitDetailsHandler = (e) => {
     e.preventDefault();
-    dispatch(updateProfile(name, email));
+    dispatch(updateProfile(name, email)).then(() => {
+      history.push(`/profile/${userInfo._id}`);
+    });
   };
 
   const submitPasswordHandler = (e) => {
@@ -66,7 +57,11 @@ const ProfileEditView = ({ match }) => {
     if (newPassword !== confirmPassword) {
       setPasswordMatch(false);
     } else {
-      dispatch(updatePassword(currentPassword, newPassword));
+      dispatch(updatePassword(currentPassword, newPassword)).then(() => {
+        dispatch(logout()).then(() => {
+          history.push('/signin');
+        });
+      });
     }
   };
 
@@ -89,7 +84,7 @@ const ProfileEditView = ({ match }) => {
                     type='name'
                     placeholder={userInfo.name}
                     value={name}
-                    onChange={(e) => handleInputChange('name', e.target.value)}
+                    onChange={(e) => setName(e.target.value)}
                   ></Form.Control>
                 </Form.Group>
 
@@ -99,8 +94,7 @@ const ProfileEditView = ({ match }) => {
                     type='email'
                     placeholder={userInfo.email}
                     value={email}
-                    onChange={(e) => handleInputChange('email', e.target.value)}
-                    required
+                    onChange={(e) => setEmail(e.target.value)}
                   ></Form.Control>
                 </Form.Group>
                 <Button type='submit' variant='danger'>
@@ -120,9 +114,7 @@ const ProfileEditView = ({ match }) => {
                     type='password'
                     placeholder='Current password'
                     value={currentPassword}
-                    onChange={(e) =>
-                      handleInputChange('currentPassword', e.target.value)
-                    }
+                    onChange={(e) => setCurrentPassword(e.target.value)}
                     minLength='8'
                     required
                   ></Form.Control>
@@ -134,9 +126,7 @@ const ProfileEditView = ({ match }) => {
                     type='password'
                     placeholder='New password'
                     value={newPassword}
-                    onChange={(e) =>
-                      handleInputChange('newPassword', e.target.value)
-                    }
+                    onChange={(e) => setNewPassword(e.target.value)}
                     minLength='8'
                     required
                   ></Form.Control>
@@ -148,9 +138,7 @@ const ProfileEditView = ({ match }) => {
                     type='password'
                     placeholder='Confirm new password'
                     value={confirmPassword}
-                    onChange={(e) =>
-                      handleInputChange('confirmPassword', e.target.value)
-                    }
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                     minLength='8'
                     required
                   ></Form.Control>
