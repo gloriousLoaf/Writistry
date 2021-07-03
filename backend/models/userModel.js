@@ -23,6 +23,10 @@ const userSchema = mongoose.Schema(
       required: true,
       default: false,
     },
+    bio: {
+      type: String,
+      required: false,
+    },
     blogposts: [
       {
         type: mongoose.Schema.Types.ObjectId,

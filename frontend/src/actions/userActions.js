@@ -127,50 +127,56 @@ export const getUserProfileById = (id) => async (dispatch) => {
 };
 
 // UPDATE PROFILE
-export const updateProfile = (name, email) => async (dispatch, getState) => {
-  try {
-    dispatch({
-      type: USER_UPDATE_REQUEST,
-    });
+export const updateProfile =
+  (name, email, bio) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: USER_UPDATE_REQUEST,
+      });
 
-    const {
-      userLogin: { userInfo },
-    } = getState();
+      const {
+        userLogin: { userInfo },
+      } = getState();
 
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
 
-    const { data } = await axios.put(
-      '/api/users/profile/:id',
-      { name, email },
-      config
-    );
+      /**
+       * @desc    If user deletes bio, submitting '',
+       *          or if user submits a bunch of whitespace
+       *          set bio = ' ' so mongodb replaces any existing bio.
+       *          (mongo will not replace existing bio with '')
+       */
+      if (bio === '' || !bio.trim().length) {
+        bio = ' ';
+      }
 
-    dispatch({
-      type: USER_UPDATE_SUCCESS,
-      payload: data,
-    });
+      const { data } = await axios.put(
+        '/api/users/profile/:id',
+        { name, email, bio },
+        config
+      );
 
-    // dispatch({
-    //   type: USER_LOGIN_SUCCESS,
-    //   payload: data,
-    // });
+      dispatch({
+        type: USER_UPDATE_SUCCESS,
+        payload: data,
+      });
 
-    localStorage.setItem('userInfo', JSON.stringify(data));
-  } catch (error) {
-    dispatch({
-      type: USER_UPDATE_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
-  }
-};
+      localStorage.setItem('userInfo', JSON.stringify(data));
+    } catch (error) {
+      dispatch({
+        type: USER_UPDATE_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 
 // UPDATE PASSWORD
 export const updatePassword =

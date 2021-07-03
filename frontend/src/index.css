@@ -28,6 +28,14 @@ h3 {
   padding: 1rem 0;
 }
 
+@media (max-width: 768px) {
+  h1.home-view,
+  h2.home-view {
+    display: flex;
+    justify-content: center;
+  }
+}
+
 a,
 a:hover {
   outline: none;

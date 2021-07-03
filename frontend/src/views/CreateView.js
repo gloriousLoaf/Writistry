@@ -49,7 +49,7 @@ const CreateView = ({ history }) => {
 
       <Form className='my-4' onSubmit={submitHandler}>
         <Form.Group controlId='name'>
-          <Form.Label>Blog Title</Form.Label>
+          <Form.Label>Blog Title: max 75 characters</Form.Label>
           <Form.Control
             required
             type='text'
@@ -61,11 +61,11 @@ const CreateView = ({ history }) => {
         </Form.Group>
 
         <Form.Group controlId='byline'>
-          <Form.Label>Byline</Form.Label>
+          <Form.Label>Byline: max 75 characters</Form.Label>
           <Form.Control
             required
             type='text'
-            placeholder='Hook the reader in less than 50 characters'
+            placeholder='Hook the reader in less than 75 characters'
             value={byline}
             maxLength={75}
             onChange={(e) => setByline(e.target.value)}
@@ -73,7 +73,7 @@ const CreateView = ({ history }) => {
         </Form.Group>
 
         <Form.Group controlId='content'>
-          <Form.Label>Content of your post</Form.Label>
+          <Form.Label>Content: max about 5000 words</Form.Label>
           <Form.Control
             required
             as='textarea'

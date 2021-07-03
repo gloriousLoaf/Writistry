@@ -14,6 +14,7 @@ import Message from '../components/Message';
 const ProfileEditView = ({ match, history }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [bio, setBio] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -40,7 +41,7 @@ const ProfileEditView = ({ match, history }) => {
 
   const submitDetailsHandler = (e) => {
     e.preventDefault();
-    dispatch(updateProfile(name, email)).then(() => {
+    dispatch(updateProfile(name, email, bio)).then(() => {
       history.push(`/profile/${userInfo._id}`);
     });
   };
@@ -68,6 +69,7 @@ const ProfileEditView = ({ match, history }) => {
   return (
     <Wrapper>
       <h1>Update Your Profile Details</h1>
+      <p>Edit any of these three fields, then submit the changes.</p>
       {passwordMatch === false && (
         <Message variant='danger'>
           New Password and Confirm Password fields must match.
@@ -96,6 +98,30 @@ const ProfileEditView = ({ match, history }) => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                   ></Form.Control>
+                </Form.Group>
+
+                <Form.Group controlId='bio'>
+                  <Form.Label>Personal Bio: 250 characters</Form.Label>
+                  {/* see userActions for validation */}
+                  {/* user does not have bio ? use placeholder : set bio as defaultValue*/}
+                  {!userInfo.bio || userInfo.bio === ' ' ? (
+                    <Form.Control
+                      type='text'
+                      as='textarea'
+                      placeholder='Tell everyone about yourself'
+                      value={bio}
+                      maxLength={250}
+                      onChange={(e) => setBio(e.target.value)}
+                    ></Form.Control>
+                  ) : (
+                    <Form.Control
+                      type='text'
+                      as='textarea'
+                      defaultValue={userInfo.bio}
+                      maxLength={250}
+                      onChange={(e) => setBio(e.target.value)}
+                    ></Form.Control>
+                  )}
                 </Form.Group>
                 <Button type='submit' variant='danger'>
                   Submit Updates

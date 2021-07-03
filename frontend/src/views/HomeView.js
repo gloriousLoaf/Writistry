@@ -8,12 +8,13 @@ import { Col, Row } from 'react-bootstrap';
 const HomeView = () => {
   return (
     <Wrapper>
-      <h1>Welcome to Writistry</h1>
+      <h1 className='home-view'>Welcome to Writistry</h1>
       <Row className='my-4'>
         <Col xs={12} md={4} className='my-2 text-center'>
           <Image src='./logo512.png' fluid />
         </Col>
         <Col xs={12} md={8} className='my-2'>
+          <h2 className='h5 home-view'>Social blogging with Markdown</h2>
           <p>
             Writistry is a place for developers, designers and tech writers to
             create and share. Whether you choose to create full blog posts or

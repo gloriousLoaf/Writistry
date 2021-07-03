@@ -34,7 +34,11 @@ const ProfileView = ({ match }) => {
           <Row className='my-4'>
             <Col className='my-2 text-center'>
               <p>Joined on {dateFix(userInfo.createdAt)}</p>
-              <p>TODO: Add user bio</p>
+              {!userInfo.bio || userInfo.bio === ' ' ? (
+                <p>No bio available yet.</p>
+              ) : (
+                <p>{userInfo.bio}</p>
+              )}
               {sessionUser && userInfo._id === sessionUser._id && (
                 <Link to={`/profile/${userInfo._id}/edit`}>Edit Profile</Link>
               )}

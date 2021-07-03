@@ -80,25 +80,27 @@ const getUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
-// TODO: create actual controller - update name / email
 /**
  * @desc      Update user profile
  * @route     PUT /api/users/profile/:id/edit
  * @access    Private/Auth'd Users
  */
 const updateUserProfile = asyncHandler(async (req, res) => {
+  console.log(req.user);
   const user = await User.findById(req.user._id);
 
   if (user) {
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
+    user.bio = req.body.bio || user.bio;
     const updatedUser = await user.save();
     res.json({
       _id: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
+      bio: updatedUser.bio,
       isAdmin: updatedUser.isAdmin,
-      // token: generateToken(updatedUser._id),
+      token: generateToken(updatedUser._id),
     });
   } else {
     res.status(404);
