@@ -28,7 +28,15 @@ const BlogView = ({ match }) => {
       {blogpost && blogpost.createdAt ? (
         <Wrapper>
           {userInfo && userInfo._id === blogpost.authorId && (
-            <Link to={`/edit/${blogpost._id}`}>Edit this post</Link>
+            <Link
+              to={{
+                pathname: `/edit/${blogpost._id}`,
+                blogProps: { blogpost },
+                userProps: { userInfo },
+              }}
+            >
+              Edit this post
+            </Link>
           )}
           <ReactMarkdown children={`# ${blogpost.name}`} />
           <ReactMarkdown children={`_${blogpost.byline}_`} />

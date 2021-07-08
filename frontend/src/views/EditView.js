@@ -1,12 +1,12 @@
 /* EDIT BLOG POST VIEW - ADMIN */
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Button, Form, Modal } from 'react-bootstrap';
 import Wrapper from '../components/Wrapper';
 import { updatePost, deletePost } from '../actions/blogActions';
 
-const EditView = ({ match, history }) => {
+const EditView = ({ match, history, location }) => {
   const [name, setName] = useState('');
   const [byline, setByline] = useState('');
   const [content, setContent] = useState('');
@@ -14,34 +14,40 @@ const EditView = ({ match, history }) => {
 
   const dispatch = useDispatch();
 
-  const blogList = useSelector((state) => state.blogList);
-  const { blogposts } = blogList;
+  /**
+   * user should see only see this view by 'Edit' link on their posts,
+   * either from FeedView or BlogView, which pass in the props
+   *
+   * if user views another user's post & changes URL to '/edit/:id'
+   * there will be no props, so the null values are used in useEffect
+   * to kick them to the FeedView
+   */
+  let blogpost;
+  if (location.blogProps) {
+    blogpost = location.blogProps.blogpost;
+  } else {
+    blogpost = null;
+  }
 
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
+  let userInfo;
+  if (location.blogProps) {
+    userInfo = location.userProps.userInfo;
+  } else {
+    userInfo = null;
+  }
 
-  // prevent users from seeing another user's edit view
   useEffect(() => {
-    if (!userInfo || userInfo._id !== match.params.id) {
+    // protect edit view for only the post's author, see above
+    if (!userInfo || !blogpost || userInfo._id !== blogpost.authorId) {
       history.push('/feed');
     }
-  }, [match, history, userInfo]);
-
-  useEffect(() => {
-    if (!userInfo) {
-      history.push('/feed');
+    // fill component state hooks
+    if (blogpost !== null) {
+      setName(blogpost.name);
+      setByline(blogpost.byline);
+      setContent(blogpost.content);
     }
-    const fillData = () => {
-      blogposts.forEach((post) => {
-        if (post._id === match.params.id) {
-          setName(post.name);
-          setByline(post.byline);
-          setContent(post.content);
-        }
-      });
-    };
-    fillData();
-  }, [userInfo, history, blogposts, match]);
+  }, [userInfo, blogpost, history]);
 
   const submitHandler = (e) => {
     e.preventDefault();
