@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Wrapper from '../components/Wrapper';
 import BlogCard from '../components/BlogCard';
 import { getUserProfileById } from '../actions/userActions';
-import { dateFix } from '../helpers/helpers';
+import { joinedDate } from '../helpers/helpers';
 
 const ProfileView = ({ match }) => {
   const dispatch = useDispatch();
@@ -14,12 +14,14 @@ const ProfileView = ({ match }) => {
   const userProfile = useSelector((state) => state.userProfile);
   const { userInfo } = userProfile;
 
+  // authored blogposts linked to user in db
   let blogposts;
   if (userInfo) {
     blogposts = userInfo.blogposts;
   }
 
   // to compare auth'd user vs current profile being viewed
+  // see Link for 'Edit Profile' below
   const sessionUser = JSON.parse(localStorage.getItem('userInfo'));
 
   useEffect(() => {
@@ -33,7 +35,7 @@ const ProfileView = ({ match }) => {
           <h1 className='text-center'>{userInfo.name}</h1>
           <Row className='my-4'>
             <Col className='my-2 text-center'>
-              <p>Joined on {dateFix(userInfo.createdAt)}</p>
+              <p>Joined on {joinedDate(userInfo.createdAt)}</p>
               {!userInfo.bio || userInfo.bio === ' ' ? (
                 <p>No bio available yet.</p>
               ) : (
