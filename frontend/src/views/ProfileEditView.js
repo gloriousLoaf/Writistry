@@ -19,6 +19,8 @@ const ProfileEditView = ({ match, history }) => {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordMatch, setPasswordMatch] = useState(true);
+  const [socialNetwork, setSocialNetwork] = useState('Facebook');
+  const [username, setUsername] = useState('');
 
   const dispatch = useDispatch();
 
@@ -64,6 +66,14 @@ const ProfileEditView = ({ match, history }) => {
         });
       });
     }
+  };
+
+  const submitUserAvatar = async (e) => {
+    e.preventDefault();
+    // TODO: submit this to backend;
+    // use network-avatar-picker to get url, add to models & db
+    console.log('socialNetwork', socialNetwork);
+    console.log('username', username);
   };
 
   return (
@@ -172,6 +182,58 @@ const ProfileEditView = ({ match, history }) => {
                 <Button type='submit' variant='danger'>
                   Change Password
                 </Button>
+              </Form>
+            </Col>
+          </Row>
+
+          <Row className='mb-5'>
+            <Col>
+              <Form onSubmit={submitUserAvatar}>
+                <Form.Group controlId='socialSite'>
+                  <h3 className='h5'>Update Your Avatar</h3>
+                  <p>
+                    Pick a social network from the dropdown options, then add
+                    your username in the next field. The avatar for that account
+                    will be added to Writistry. See below submit button for
+                    privacy details.
+                  </p>
+                  <Form.Label>Social Network</Form.Label>
+                  <Form.Control
+                    as='select'
+                    value={socialNetwork}
+                    onChange={(e) => setSocialNetwork(e.target.value)}
+                    required
+                  >
+                    <option value='facebook'>Facebook</option>
+                    <option value='github'>GitHub</option>
+                    <option value='gmail'>Gmail</option>
+                    <option value='instagram'>Instagram</option>
+                    <option value='tumblr'>Tumblr</option>
+                    <option value='twitter'>Twitter</option>
+                    <option value='vimeo'>Vimeo</option>
+                    <option value='youtube'>YouTube</option>
+                  </Form.Control>
+                </Form.Group>
+
+                <Form.Group controlId='socialUsername'>
+                  <Form.Label>Username</Form.Label>
+                  <Form.Control
+                    type='text'
+                    placeholder='someUser823659'
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                  ></Form.Control>
+                </Form.Group>
+
+                <Button type='submit' variant='danger'>
+                  Update Avatar
+                </Button>
+                <p className='mt-3'>
+                  We will not share this data. This form will get the URL for
+                  your avatar; no other information from your social media
+                  account will be shared with us.
+                </p>
               </Form>
             </Col>
           </Row>
