@@ -18,7 +18,9 @@ const ProfileEditView = ({ match, history }) => {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [passwordMatch, setPasswordMatch] = useState(true);
+  // two hooks for password messaging: no-match error & update success or fail
+  const [passwordMatch, setPasswordMatch] = useState('');
+  const [passwordChanged, setPasswordChanged] = useState();
   const [socialNetwork, setSocialNetwork] = useState('Facebook');
   const [username, setUsername] = useState('');
 
@@ -50,20 +52,24 @@ const ProfileEditView = ({ match, history }) => {
 
   const submitPasswordHandler = (e) => {
     e.preventDefault();
-    if (
-      currentPassword === '' ||
-      newPassword === '' ||
-      confirmPassword === ''
-    ) {
-      return;
-    }
     if (newPassword !== confirmPassword) {
+      // remove previous error messages
+      setPasswordChanged('');
       setPasswordMatch(false);
     } else {
-      dispatch(updatePassword(currentPassword, newPassword)).then(() => {
-        dispatch(logout()).then(() => {
-          history.push('/signin');
-        });
+      dispatch(updatePassword(currentPassword, newPassword)).then((data) => {
+        // backend returns 'updated: yes' on success, nothing on fail
+        if (data && data.updated === 'yes') {
+          // remove previous error messages
+          setPasswordMatch(true);
+          setPasswordChanged('yes');
+          setTimeout(() => {
+            dispatch(logout());
+          }, 1500);
+        } else {
+          setPasswordMatch(true);
+          setPasswordChanged('no');
+        }
       });
     }
   };
@@ -80,11 +86,6 @@ const ProfileEditView = ({ match, history }) => {
     <Wrapper>
       <h1>Update Your Profile Details</h1>
       <p>Edit any of these three fields, then submit the changes.</p>
-      {passwordMatch === false && (
-        <Message variant='danger'>
-          New Password and Confirm Password fields must match.
-        </Message>
-      )}
       {userInfo && (
         <>
           <Row className='mb-5'>
@@ -145,6 +146,10 @@ const ProfileEditView = ({ match, history }) => {
               <Form onSubmit={submitPasswordHandler}>
                 <Form.Group controlId='currentPassword'>
                   <h2>Update Password</h2>
+                  <p>
+                    You will be logged out. Remember to update your password
+                    manager if applicable.
+                  </p>
                   <Form.Label>Current Password</Form.Label>
                   <Form.Control
                     type='password'
@@ -182,6 +187,21 @@ const ProfileEditView = ({ match, history }) => {
                 <Button type='submit' variant='danger'>
                   Change Password
                 </Button>
+                {passwordMatch === false && (
+                  <Message variant='danger'>
+                    New Password and Confirm Password fields must match.
+                  </Message>
+                )}
+                {passwordChanged === 'yes' && (
+                  <Message variant='success'>
+                    Password updated! Logging out...
+                  </Message>
+                )}
+                {passwordChanged === 'no' && (
+                  <Message variant='danger'>
+                    That did not work. Was your current password correct?
+                  </Message>
+                )}
               </Form>
             </Col>
           </Row>

@@ -81,7 +81,7 @@ export const userUpdatePasswordReducer = (state = {}, action) => {
     case USER_PASSWORD_REQUEST:
       return { loading: true };
     case USER_PASSWORD_SUCCESS:
-      return { loading: false, userInfo: action.payload };
+      return { loading: false, updated: action.payload };
     case USER_PASSWORD_FAIL:
       return { loading: false, error: action.payload };
     default:

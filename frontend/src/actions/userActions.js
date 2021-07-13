@@ -60,7 +60,7 @@ export const logout = () => (dispatch) => {
   let clearKeys = ['userInfo'];
   clearKeys.forEach((key) => localStorage.removeItem(key));
   dispatch({ type: USER_LOGOUT });
-  document.location.href = '/';
+  document.location.href = '/signin';
 };
 
 // REGISTER
@@ -197,9 +197,8 @@ export const updatePassword =
         },
       };
 
-      // TODO: create actual axios & compare password on backend
-      const { data } = await axios.post(
-        '/api/users',
+      const { data } = await axios.put(
+        `/api/users/profile/auth/${userInfo._id}`,
         { currentPassword, newPassword },
         config
       );
@@ -209,12 +208,7 @@ export const updatePassword =
         payload: data,
       });
 
-      // dispatch({
-      //   type: USER_LOGIN_SUCCESS,
-      //   payload: data,
-      // });
-
-      localStorage.setItem('userInfo', JSON.stringify(data));
+      return data;
     } catch (error) {
       dispatch({
         type: USER_PASSWORD_FAIL,

@@ -82,17 +82,18 @@ const getUserProfile = asyncHandler(async (req, res) => {
 
 /**
  * @desc      Update user profile
- * @route     PUT /api/users/profile/:id/edit
+ * @route     PUT /api/users/profile/:id
  * @access    Private/Auth'd Users
  */
 const updateUserProfile = asyncHandler(async (req, res) => {
-  console.log(req.user);
+  const { name, email, bio } = req.body;
+
   const user = await User.findById(req.user._id);
 
   if (user) {
-    user.name = req.body.name || user.name;
-    user.email = req.body.email || user.email;
-    user.bio = req.body.bio || user.bio;
+    user.name = name || user.name;
+    user.email = email || user.email;
+    user.bio = bio || user.bio;
     const updatedUser = await user.save();
     res.json({
       _id: updatedUser._id,
@@ -111,25 +112,20 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 // TODO: create actual controller - compare & update passwords
 /**
  * @desc      Update user profile
- * @route     PUT /api/users/profile/:id/edit
+ * @route     PUT /api/users/profile/auth/:id
  * @access    Private/Auth'd Users
  */
 const updateUserPassword = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id);
+  const { currentPassword, newPassword } = req.body;
 
-  if (user) {
-    user.name = req.body.name || user.name;
-    user.email = req.body.email || user.email;
-    if (req.body.password) {
-      user.password = req.body.password;
-    }
-    const updatedUser = await user.save();
+  const user = await User.findById(req.user._id).select('+password');
+
+  // if user exists & password match
+  if (user && (await user.matchPassword(currentPassword))) {
+    user.password = newPassword;
+    await user.save();
     res.json({
-      _id: updatedUser._id,
-      name: updatedUser.name,
-      email: updatedUser.email,
-      isAdmin: updatedUser.isAdmin,
-      token: generateToken(updatedUser._id),
+      updated: 'yes',
     });
   } else {
     res.status(404);
