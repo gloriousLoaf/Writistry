@@ -132,6 +132,4 @@ version!)_
 
 ---
 
-just adding something to the readme to test my git config
-
 ##### This markdown was created with [Readme Generator](https://github.com/gloriousLoaf/Readme-Generator)
