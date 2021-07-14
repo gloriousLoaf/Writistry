@@ -1,12 +1,12 @@
 /* EDIT BLOG POST VIEW - ADMIN */
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Button, Form, Modal } from 'react-bootstrap';
 import Wrapper from '../components/Wrapper';
 import { updatePost, deletePost } from '../actions/blogActions';
 
-const EditView = ({ match, location, history }) => {
+const EditView = ({ match, history, location }) => {
   const [name, setName] = useState('');
   const [byline, setByline] = useState('');
   const [content, setContent] = useState('');
@@ -14,37 +14,48 @@ const EditView = ({ match, location, history }) => {
 
   const dispatch = useDispatch();
 
-  const blogList = useSelector((state) => state.blogList);
-  const { blogposts } = blogList;
+  /**
+   * user should see only see this view by 'Edit' link on their posts,
+   * either from FeedView or BlogView, which pass in the props
+   *
+   * if user views another user's post & changes URL to '/edit/:id'
+   * there will be no props, so the null values are used in useEffect
+   * to kick them to the FeedView
+   */
+  let blogpost;
+  if (location.blogProps) {
+    blogpost = location.blogProps.blogpost;
+  } else {
+    blogpost = null;
+  }
 
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
-
-  const redirect = location.search ? location.search.split('=')[1] : '/feed';
+  let userInfo;
+  if (location.blogProps) {
+    userInfo = location.userProps.userInfo;
+  } else {
+    userInfo = null;
+  }
 
   useEffect(() => {
-    if (!userInfo) {
-      history.push(redirect);
-    } else if (!userInfo.isAdmin) {
-      history.push(redirect);
+    // protect edit view for only the post's author, see above
+    if (!userInfo || !blogpost || userInfo._id !== blogpost.authorId) {
+      history.push('/feed');
     }
-    const fillData = () => {
-      blogposts.forEach((post) => {
-        if (post._id === match.params.id) {
-          setName(post.name);
-          setByline(post.byline);
-          setContent(post.content);
-        }
-      });
-    };
-    fillData();
-  }, [userInfo, history, redirect, blogposts, match]);
+    // fill component state hooks
+    if (blogpost !== null) {
+      setName(blogpost.name);
+      setByline(blogpost.byline);
+      setContent(blogpost.content);
+    }
+  }, [userInfo, blogpost, history]);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(updatePost(match.params.id, name, byline, content)).then(() => {
-      history.push(redirect);
-    });
+    dispatch(updatePost(match.params.id, name, byline, content)).then(
+      (data) => {
+        history.push(`/blogposts/${data._id}`);
+      }
+    );
   };
 
   const deleteModalShowHandler = () => {
@@ -57,7 +68,7 @@ const EditView = ({ match, location, history }) => {
 
   const deletePostHandler = () => {
     dispatch(deletePost(match.params.id)).then(() => {
-      history.push(redirect);
+      history.push('/feed');
     });
   };
 
@@ -69,7 +80,7 @@ const EditView = ({ match, location, history }) => {
           <p>
             Changes will not be saved until you submit them. For more details on
             blogging with markdown, head to the{' '}
-            <Link to={'/admin/create'}>Create Blogpost page</Link> or go here to{' '}
+            <Link to={'/create'}>Create Blogpost page</Link> or go here to{' '}
             <a
               href='https://www.markdownguide.org/basic-syntax/'
               target='_blank'

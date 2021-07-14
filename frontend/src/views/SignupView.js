@@ -4,25 +4,25 @@ import { Link } from 'react-router-dom';
 import { Form, Button, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Wrapper from '../components/Wrapper';
+import Message from '../components/Message';
 import { register } from '../actions/userActions';
 
-const SignupView = ({ location, history }) => {
+const SignupView = ({ history }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordMatch, setPasswordMatch] = useState(true);
 
   const dispatch = useDispatch();
 
   const userRegister = useSelector((state) => state.userRegister);
-  const { userInfo } = userRegister;
-
-  const redirect = location.search ? location.search.split('=')[1] : '/feed';
+  const { userInfo, error } = userRegister;
 
   // prevent signed-in users from seeing sign up page
   useEffect(() => {
-    userInfo && history.push(redirect);
-  }, [history, userInfo, redirect]);
+    userInfo && history.push('/');
+  }, [history, userInfo]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -33,6 +33,8 @@ const SignupView = ({ location, history }) => {
       confirmPassword === ''
     ) {
       return;
+    } else if (password !== confirmPassword) {
+      setPasswordMatch(false);
     } else {
       dispatch(register(name, email, password));
     }
@@ -40,6 +42,16 @@ const SignupView = ({ location, history }) => {
 
   return (
     <Wrapper>
+      {error && (
+        <Message variant='danger'>
+          That email address is already associated with an account.
+        </Message>
+      )}
+      {passwordMatch === false && (
+        <Message variant='danger'>
+          Password and Confirm Password fields must match.
+        </Message>
+      )}
       <Col xs={12} md={8}>
         <h2>Sign Up</h2>
       </Col>
@@ -48,11 +60,11 @@ const SignupView = ({ location, history }) => {
           <Form.Group controlId='name'>
             <Form.Label>Name</Form.Label>
             <Form.Control
-              id='name'
               type='name'
               placeholder='Enter name'
               value={name}
               onChange={(e) => setName(e.target.value)}
+              required
             ></Form.Control>
           </Form.Group>
 
@@ -63,6 +75,7 @@ const SignupView = ({ location, history }) => {
               placeholder='Enter email'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
             ></Form.Control>
           </Form.Group>
 
@@ -73,6 +86,8 @@ const SignupView = ({ location, history }) => {
               placeholder='Enter password'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              minLength='8'
+              required
             ></Form.Control>
           </Form.Group>
 
@@ -83,7 +98,17 @@ const SignupView = ({ location, history }) => {
               placeholder='Confirm password'
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
+              minLength='8'
+              required
             ></Form.Control>
+          </Form.Group>
+          <Form.Group controlId='agreeToTerms'>
+            <Form.Check type='checkbox'>
+              <Form.Check.Input required />
+              <Form.Check.Label>
+                I agree to the <Link to='/terms'>Terms and Conditions</Link>
+              </Form.Check.Label>
+            </Form.Check>
           </Form.Group>
           <Button type='submit' variant='danger'>
             Create Account

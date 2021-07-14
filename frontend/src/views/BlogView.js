@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import ReactMarkdown from 'react-markdown';
 import ShareLink from 'react-twitter-share-link';
-import { getPostById } from '../actions/blogActions';
+import { getBlogById } from '../actions/blogActions';
 import Wrapper from '../components/Wrapper';
 import { dateFix } from '../helpers/helpers';
 
@@ -18,7 +18,7 @@ const BlogView = ({ match }) => {
   const { userInfo } = userLogin;
 
   useEffect(() => {
-    dispatch(getPostById(match.params.id));
+    dispatch(getBlogById(match.params.id));
   }, [dispatch, match]);
 
   const link = window.location.href;
@@ -27,9 +27,22 @@ const BlogView = ({ match }) => {
     <>
       {blogpost && blogpost.createdAt ? (
         <Wrapper>
+          {userInfo && userInfo._id === blogpost.authorId && (
+            <Link
+              to={{
+                pathname: `/edit/${blogpost._id}`,
+                blogProps: { blogpost },
+                userProps: { userInfo },
+              }}
+            >
+              Edit this post
+            </Link>
+          )}
           <ReactMarkdown children={`# ${blogpost.name}`} />
           <ReactMarkdown children={`_${blogpost.byline}_`} />
-          <ReactMarkdown children={`**by ${blogpost.author}**`} />
+          <ReactMarkdown
+            children={`**by [${blogpost.author}](/profile/${blogpost.authorId})**`}
+          />
           <ReactMarkdown
             children={dateFix(blogpost.createdAt)}
             className='small'
@@ -40,8 +53,7 @@ const BlogView = ({ match }) => {
           {userInfo && blogpost ? (
             <div className='my-5'>
               <p>
-                <span className='font-weight-bold'>Share this on Twitter</span>{' '}
-                - I would be so grateful!
+                <span className='font-weight-bold'>Share this on Twitter</span>
               </p>
               <ShareLink
                 className='my-5'
@@ -60,8 +72,7 @@ const BlogView = ({ match }) => {
               <p>
                 <span className='font-weight-bold'>
                   Sign In to share this on Twitter
-                </span>{' '}
-                - I would be so grateful!
+                </span>
               </p>
               <Link to={'/signin'}>Sign In</Link>
             </div>

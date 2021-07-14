@@ -16,12 +16,29 @@ const userSchema = mongoose.Schema(
     password: {
       type: String,
       required: true,
+      select: false,
     },
     isAdmin: {
       type: Boolean,
       required: true,
       default: false,
     },
+    bio: {
+      type: String,
+      required: false,
+    },
+    avatarString: {
+      type: String,
+      required: true,
+      default: 'no avatar set yet',
+    },
+    blogposts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'Blog',
+      },
+    ],
   },
   {
     timestamps: true,

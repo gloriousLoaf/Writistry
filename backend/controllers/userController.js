@@ -11,7 +11,7 @@ import User from '../models/userModel.js';
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email }).select('+password');
 
   // if user exists & password match
   if (user && (await user.matchPassword(password))) {
@@ -66,18 +66,42 @@ const registerUser = asyncHandler(async (req, res) => {
 
 /**
  * @desc      Get user profile
- * @route     GET /api/users/profile
- * @access    Private
+ * @route     GET /api/users/profile/:id
+ * @access    Public
  */
 const getUserProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id).populate('blogposts');
+
+  if (user) {
+    res.json(user);
+  } else {
+    res.status(404);
+    throw new Error('User not found.');
+  }
+});
+
+/**
+ * @desc      Update user profile
+ * @route     PUT /api/users/profile/:id
+ * @access    Private/Auth'd Users
+ */
+const updateUserProfile = asyncHandler(async (req, res) => {
+  const { name, email, bio } = req.body;
+
   const user = await User.findById(req.user._id);
 
   if (user) {
+    user.name = name || user.name;
+    user.email = email || user.email;
+    user.bio = bio || user.bio;
+    const updatedUser = await user.save();
     res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      bio: updatedUser.bio,
+      isAdmin: updatedUser.isAdmin,
+      token: generateToken(updatedUser._id),
     });
   } else {
     res.status(404);
@@ -87,26 +111,42 @@ const getUserProfile = asyncHandler(async (req, res) => {
 
 /**
  * @desc      Update user profile
- * @route     PUT /api/users/profile
- * @access    Private
+ * @route     PUT /api/users/profile/auth/:id
+ * @access    Private/Auth'd Users
  */
-const updateUserProfile = asyncHandler(async (req, res) => {
+const updateUserPassword = asyncHandler(async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+
+  const user = await User.findById(req.user._id).select('+password');
+
+  // if user exists & password match
+  if (user && (await user.matchPassword(currentPassword))) {
+    user.password = newPassword;
+    await user.save();
+    res.json({
+      updated: 'yes',
+    });
+  } else {
+    res.status(404);
+    throw new Error('User not found.');
+  }
+});
+
+/**
+ * @desc      Update user profile
+ * @route     PUT /api/users/profile/avatar/:id
+ * @access    Private/Auth'd Users
+ */
+const updateUserAvatar = asyncHandler(async (req, res) => {
+  const { avatarString } = req.body;
+
   const user = await User.findById(req.user._id);
 
+  // if user exists & password match
   if (user) {
-    user.name = req.body.name || user.name;
-    user.email = req.body.email || user.email;
-    if (req.body.password) {
-      user.password = req.body.password;
-    }
-    const updatedUser = await user.save();
-    res.json({
-      _id: updatedUser._id,
-      name: updatedUser.name,
-      email: updatedUser.email,
-      isAdmin: updatedUser.isAdmin,
-      token: generateToken(updatedUser._id),
-    });
+    user.avatarString = avatarString;
+    await user.save();
+    res.json(user);
   } else {
     res.status(404);
     throw new Error('User not found.');
@@ -140,13 +180,14 @@ const deleteUser = asyncHandler(async (req, res) => {
   }
 });
 
+// UNUSED??
 /**
  * @desc      Get a user by id
  * @route     GET /api/users/:id
  * @access    Private/Admin
  */
 const getUserById = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params.id).select('-password');
+  const user = await User.findById(req.params.id);
 
   if (user) {
     res.json(user);
@@ -156,6 +197,7 @@ const getUserById = asyncHandler(async (req, res) => {
   }
 });
 
+// UNUSED??
 /**
  * @desc      Update user
  * @route     PUT /api/users/:id
@@ -191,6 +233,8 @@ export {
   registerUser,
   getUserProfile,
   updateUserProfile,
+  updateUserPassword,
+  updateUserAvatar,
   getUsers,
   deleteUser,
   getUserById,

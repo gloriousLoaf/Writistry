@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Form } from 'react-bootstrap';
 import Wrapper from '../components/Wrapper';
-import { createPost } from '../actions/blogActions';
+import { createBlog } from '../actions/blogActions';
 
-const CreateView = ({ location, history }) => {
+const CreateView = ({ history }) => {
   const [name, setName] = useState('');
   const [byline, setByline] = useState('');
   const [content, setContent] = useState('');
@@ -15,20 +15,16 @@ const CreateView = ({ location, history }) => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const redirect = location.search ? location.search.split('=')[1] : '/feed';
-
   useEffect(() => {
     if (!userInfo) {
-      history.push(redirect);
-    } else if (!userInfo.isAdmin) {
-      history.push(redirect);
+      history.push('/feed');
     }
   });
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(createPost(name, byline, content)).then(() => {
-      history.push(redirect);
+    dispatch(createBlog(name, byline, content)).then((data) => {
+      history.push(`/blogposts/${data._id}`);
     });
   };
 
@@ -42,7 +38,7 @@ const CreateView = ({ location, history }) => {
           target='_blank'
           rel='noreferrer'
         >
-          simple markdown syntax.
+          basic Markdown syntax.
         </a>{' '}
         The <strong>Title</strong> and <strong>Byline</strong> inputs will be
         automatically formatted for you. The <strong>Content</strong> textarea
@@ -53,7 +49,7 @@ const CreateView = ({ location, history }) => {
 
       <Form className='my-4' onSubmit={submitHandler}>
         <Form.Group controlId='name'>
-          <Form.Label>Blog Title</Form.Label>
+          <Form.Label>Blog Title: max 75 characters</Form.Label>
           <Form.Control
             required
             type='text'
@@ -65,11 +61,11 @@ const CreateView = ({ location, history }) => {
         </Form.Group>
 
         <Form.Group controlId='byline'>
-          <Form.Label>Byline</Form.Label>
+          <Form.Label>Byline: max 75 characters</Form.Label>
           <Form.Control
             required
             type='text'
-            placeholder='Hook the reader in less than 50 characters'
+            placeholder='Hook the reader in less than 75 characters'
             value={byline}
             maxLength={75}
             onChange={(e) => setByline(e.target.value)}
@@ -77,7 +73,7 @@ const CreateView = ({ location, history }) => {
         </Form.Group>
 
         <Form.Group controlId='content'>
-          <Form.Label>Content of your post</Form.Label>
+          <Form.Label>Content: max about 5000 words</Form.Label>
           <Form.Control
             required
             as='textarea'

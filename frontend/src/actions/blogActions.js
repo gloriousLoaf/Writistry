@@ -41,7 +41,7 @@ export const listPosts = () => async (dispatch) => {
 };
 
 // BY ID
-export const getPostById = (id) => async (dispatch) => {
+export const getBlogById = (id) => async (dispatch) => {
   try {
     dispatch({ type: BLOG_BY_ID_REQUEST });
 
@@ -63,7 +63,7 @@ export const getPostById = (id) => async (dispatch) => {
 };
 
 // CREATE
-export const createPost =
+export const createBlog =
   (name, byline, content) => async (dispatch, getState) => {
     try {
       dispatch({
@@ -81,9 +81,12 @@ export const createPost =
         },
       };
 
+      const author = userInfo.name;
+      const authorId = userInfo._id;
+
       const { data } = await axios.post(
         '/api/blogs',
-        { userInfo, name, byline, content },
+        { author, authorId, name, byline, content },
         config
       );
 
@@ -91,6 +94,8 @@ export const createPost =
         type: BLOG_CREATE_SUCCESS,
         payload: data,
       });
+
+      return data;
     } catch (error) {
       dispatch({
         type: BLOG_CREATE_FAIL,
@@ -138,6 +143,8 @@ export const updatePost =
         type: BLOG_CREATE_SUCCESS,
         payload: data,
       });
+
+      return data;
     } catch (error) {
       dispatch({
         type: BLOG_UPDATE_FAIL,

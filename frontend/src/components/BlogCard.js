@@ -1,23 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { Card } from 'react-bootstrap';
-import { listPosts } from '../actions/blogActions';
 import { dateFix } from '../helpers/helpers';
 
-const BlogCard = () => {
-  const dispatch = useDispatch();
-
-  const blogList = useSelector((state) => state.blogList);
-  const { blogposts } = blogList;
-
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
-
-  useEffect(() => {
-    dispatch(listPosts());
-  }, [dispatch]);
-
+const BlogCard = ({ blogposts, userInfo }) => {
   return (
     <>
       {blogposts ? (
@@ -31,11 +17,29 @@ const BlogCard = () => {
                   <Card.Title className='mb-2'>{blogpost.name}</Card.Title>
                 </Link>
                 <Card.Text>{blogpost.byline}</Card.Text>
-                <Card.Text>by {blogpost.author}</Card.Text>
+                <Card.Text>
+                  by{' '}
+                  <Link
+                    to={{
+                      pathname: `/profile/${blogpost.authorId}`,
+                      userProfile: { blogpost },
+                    }}
+                  >
+                    {blogpost.author}
+                  </Link>
+                </Card.Text>
                 <Card.Text>{dateFix(blogpost.createdAt)}</Card.Text>
-                {userInfo && userInfo.isAdmin && (
+                {userInfo && userInfo._id === blogpost.authorId && (
                   <div className='d-flex flex-row-reverse'>
-                    <Link to={`./admin/edit/${blogpost._id}`}>Edit</Link>
+                    <Link
+                      to={{
+                        pathname: `./edit/${blogpost._id}`,
+                        blogProps: { blogpost },
+                        userProps: { userInfo },
+                      }}
+                    >
+                      Edit
+                    </Link>
                   </div>
                 )}
               </Card.Body>

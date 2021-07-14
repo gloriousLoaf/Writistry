@@ -2,7 +2,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
-import { Container, Navbar, Nav, NavDropdown } from 'react-bootstrap';
+import { Container, Navbar, Nav } from 'react-bootstrap';
 import { logout } from '../actions/userActions';
 
 const Header = () => {
@@ -24,28 +24,32 @@ const Header = () => {
             </span>
           </LinkContainer>
           <Navbar.Toggle
-            aria-controls='basic-navbar-nav'
+            aria-controls='navbar-toggle'
             className='rounded-0'
+            aria-label='Menu'
           />
-          <Navbar.Collapse id='basic-navbar-nav'>
+          <Navbar.Collapse id='navbar-toggle'>
             <Nav className='ml-auto'>
+              <LinkContainer to='/feed' className='text-dark'>
+                <Nav.Link>Feed</Nav.Link>
+              </LinkContainer>
               {userInfo ? (
-                <NavDropdown
-                  alignRight
-                  title={<span className='text-dark'>{userInfo.name}</span>}
-                  id='username'
-                >
-                  <NavDropdown.Item onClick={logoutHandler}>
-                    Sign Out
-                  </NavDropdown.Item>
-                  {userInfo && userInfo.isAdmin && (
-                    <LinkContainer to='/admin/create'>
-                      <NavDropdown.Item>Create Blogpost</NavDropdown.Item>
-                    </LinkContainer>
-                  )}
-                </NavDropdown>
+                <>
+                  <LinkContainer
+                    to={`/profile/${userInfo._id}`}
+                    className='text-dark'
+                  >
+                    <Nav.Link>Profile</Nav.Link>
+                  </LinkContainer>
+                  <LinkContainer to='/create' className='text-dark'>
+                    <Nav.Link>Create Post</Nav.Link>
+                  </LinkContainer>
+                  <LinkContainer to='/'>
+                    <Nav.Link onClick={logoutHandler}>Sign Out</Nav.Link>
+                  </LinkContainer>
+                </>
               ) : (
-                <LinkContainer to='/signin'>
+                <LinkContainer to='/signin' className='text-dark'>
                   <Nav.Link>Sign In</Nav.Link>
                 </LinkContainer>
               )}
