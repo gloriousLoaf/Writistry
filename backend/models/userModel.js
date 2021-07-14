@@ -27,6 +27,11 @@ const userSchema = mongoose.Schema(
       type: String,
       required: false,
     },
+    avatarString: {
+      type: String,
+      required: true,
+      default: 'no avatar set yet',
+    },
     blogposts: [
       {
         type: mongoose.Schema.Types.ObjectId,

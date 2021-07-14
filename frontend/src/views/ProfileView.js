@@ -1,8 +1,9 @@
 /* HOME VIEW */
 import React, { useEffect } from 'react';
-import { Col, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { Col, Row } from 'react-bootstrap';
+import Avatar from 'boring-avatars';
 import Wrapper from '../components/Wrapper';
 import BlogCard from '../components/BlogCard';
 import { getUserProfileById } from '../actions/userActions';
@@ -35,6 +36,20 @@ const ProfileView = ({ match }) => {
           <h1 className='text-center'>{userInfo.name}</h1>
           <Row className='my-4'>
             <Col className='my-2 text-center'>
+              <div className='mb-3'>
+                <Avatar
+                  size={100}
+                  name={userInfo.avatarString}
+                  variant='beam'
+                  colors={[
+                    '#F9F9F9',
+                    '#B6B2AC',
+                    '#EEDF1A',
+                    '#FF221C',
+                    '#1D2440',
+                  ]}
+                />
+              </div>
               <p>Joined on {joinedDate(userInfo.createdAt)}</p>
               {!userInfo.bio || userInfo.bio === ' ' ? (
                 <p>No bio available yet.</p>

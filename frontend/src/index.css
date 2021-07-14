@@ -39,7 +39,7 @@ h3 {
 a,
 a:hover {
   outline: none;
-  color: var(--red);
+  color: var(--dark-red);
 }
 
 a:focus {
@@ -48,7 +48,7 @@ a:focus {
 
 a.navbar-brand:hover,
 a.navbar-brand:focus {
-  text-decoration: underline var(--red);
+  text-decoration: underline var(--dark-red);
 }
 
 button,
@@ -87,7 +87,7 @@ button:focus {
 
 .navbar-nav a:hover,
 .navbar-nav a:focus {
-  color: var(--red) !important;
+  color: var(--dark-red) !important;
   text-decoration: underline #000 !important;
 }
 

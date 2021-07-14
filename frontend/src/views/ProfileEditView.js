@@ -9,6 +9,7 @@ import {
   getUserProfileById,
   updateProfile,
   updatePassword,
+  updateAvatar,
   logout,
 } from '../actions/userActions';
 import Message from '../components/Message';
@@ -91,7 +92,9 @@ const ProfileEditView = ({ match, history }) => {
 
   const submitUserAvatar = async (e) => {
     e.preventDefault();
-    // TODO: update avatarString, needs backend & model
+    dispatch(updateAvatar(avatarString)).then(() => {
+      history.push(`/profile/${userInfo._id}`);
+    });
   };
 
   return (
@@ -234,9 +237,12 @@ const ProfileEditView = ({ match, history }) => {
                   , a tiny avatar generator.
                 </p>
                 <div>
+                  {/* the name attribute is the randomizer for Boring Avatars */}
                   <Avatar
                     size={80}
-                    name={avatarString !== '' ? avatarString : userInfo.name}
+                    name={
+                      avatarString !== '' ? avatarString : userInfo.avatarString
+                    }
                     variant='beam'
                     colors={[
                       '#F9F9F9',
@@ -259,6 +265,11 @@ const ProfileEditView = ({ match, history }) => {
                     Save This Avatar
                   </Button>
                 </div>
+                {passwordChanged === 'yes' && (
+                  <Message variant='success'>
+                    Password updated! Logging out...
+                  </Message>
+                )}
               </Form>
             </Col>
           </Row>

@@ -109,7 +109,6 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
-// TODO: create actual controller - compare & update passwords
 /**
  * @desc      Update user profile
  * @route     PUT /api/users/profile/auth/:id
@@ -127,6 +126,27 @@ const updateUserPassword = asyncHandler(async (req, res) => {
     res.json({
       updated: 'yes',
     });
+  } else {
+    res.status(404);
+    throw new Error('User not found.');
+  }
+});
+
+/**
+ * @desc      Update user profile
+ * @route     PUT /api/users/profile/avatar/:id
+ * @access    Private/Auth'd Users
+ */
+const updateUserAvatar = asyncHandler(async (req, res) => {
+  const { avatarString } = req.body;
+
+  const user = await User.findById(req.user._id);
+
+  // if user exists & password match
+  if (user) {
+    user.avatarString = avatarString;
+    await user.save();
+    res.json(user);
   } else {
     res.status(404);
     throw new Error('User not found.');
@@ -214,6 +234,7 @@ export {
   getUserProfile,
   updateUserProfile,
   updateUserPassword,
+  updateUserAvatar,
   getUsers,
   deleteUser,
   getUserById,
