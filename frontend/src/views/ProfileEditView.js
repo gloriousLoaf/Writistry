@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import Avatar from 'boring-avatars';
+import randomstring from 'randomstring';
 import Wrapper from '../components/Wrapper';
 import {
   getUserProfileById,
@@ -19,10 +21,9 @@ const ProfileEditView = ({ match, history }) => {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   // two hooks for password messaging: no-match error & update success or fail
-  const [passwordMatch, setPasswordMatch] = useState('');
-  const [passwordChanged, setPasswordChanged] = useState();
-  const [socialNetwork, setSocialNetwork] = useState('Facebook');
-  const [username, setUsername] = useState('');
+  const [passwordMatch, setPasswordMatch] = useState(true);
+  const [passwordChanged, setPasswordChanged] = useState('');
+  const [avatarString, setAvatarString] = useState('');
 
   const dispatch = useDispatch();
 
@@ -74,12 +75,23 @@ const ProfileEditView = ({ match, history }) => {
     }
   };
 
+  /**
+   * @desc    Randomizer to set new values for avatarString.
+   *          If no avatarString from db or component state,
+   *          userInfo.name is default, see Avatar element below.
+   * @returns Random string in state
+   */
+  const randomAvatarValue = () => {
+    const newAvatarString = randomstring.generate({
+      length: 12,
+      charset: 'alphabetic',
+    });
+    setAvatarString(newAvatarString);
+  };
+
   const submitUserAvatar = async (e) => {
     e.preventDefault();
-    // TODO: submit this to backend;
-    // use network-avatar-picker to get url, add to models & db
-    console.log('socialNetwork', socialNetwork);
-    console.log('username', username);
+    // TODO: update avatarString, needs backend & model
   };
 
   return (
@@ -209,51 +221,44 @@ const ProfileEditView = ({ match, history }) => {
           <Row className='mb-5'>
             <Col>
               <Form onSubmit={submitUserAvatar}>
-                <Form.Group controlId='socialSite'>
-                  <h3 className='h5'>Update Your Avatar</h3>
-                  <p>
-                    Pick a social network from the dropdown options, then add
-                    your username in the next field. The avatar for that account
-                    will be added to Writistry. See below submit button for
-                    privacy details.
-                  </p>
-                  <Form.Label>Social Network</Form.Label>
-                  <Form.Control
-                    as='select'
-                    value={socialNetwork}
-                    onChange={(e) => setSocialNetwork(e.target.value)}
-                    required
+                <h3 className='h5'>Update Your Avatar</h3>
+                <p>
+                  Create a fun profile image with{' '}
+                  <a
+                    target='_blank'
+                    rel='noreferrer'
+                    href='https://boringavatars.com/'
                   >
-                    <option value='facebook'>Facebook</option>
-                    <option value='github'>GitHub</option>
-                    <option value='gmail'>Gmail</option>
-                    <option value='instagram'>Instagram</option>
-                    <option value='tumblr'>Tumblr</option>
-                    <option value='twitter'>Twitter</option>
-                    <option value='vimeo'>Vimeo</option>
-                    <option value='youtube'>YouTube</option>
-                  </Form.Control>
-                </Form.Group>
-
-                <Form.Group controlId='socialUsername'>
-                  <Form.Label>Username</Form.Label>
-                  <Form.Control
-                    type='text'
-                    placeholder='someUser823659'
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    required
-                  ></Form.Control>
-                </Form.Group>
-
-                <Button type='submit' variant='danger'>
-                  Update Avatar
-                </Button>
-                <p className='mt-3'>
-                  We will not share this data. This form will get the URL for
-                  your avatar; no other information from your social media
-                  account will be shared with us.
+                    Boring Avatars
+                  </a>
+                  , a tiny avatar generator.
                 </p>
+                <div>
+                  <Avatar
+                    size={80}
+                    name={avatarString !== '' ? avatarString : userInfo.name}
+                    variant='beam'
+                    colors={[
+                      '#F9F9F9',
+                      '#B6B2AC',
+                      '#EEDF1A',
+                      '#FF221C',
+                      '#1D2440',
+                    ]}
+                  />
+                </div>
+                <div className='my-3'>
+                  <Button
+                    className='mr-2'
+                    variant='primary'
+                    onClick={randomAvatarValue}
+                  >
+                    Generate Random
+                  </Button>
+                  <Button type='submit' variant='danger'>
+                    Save This Avatar
+                  </Button>
+                </div>
               </Form>
             </Col>
           </Row>
