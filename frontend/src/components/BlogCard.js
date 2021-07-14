@@ -33,7 +33,7 @@ const BlogCard = ({ blogposts, userInfo }) => {
                   <div className='d-flex flex-row-reverse'>
                     <Link
                       to={{
-                        pathname: `./edit/${blogpost._id}`,
+                        pathname: `/edit/${blogpost._id}`,
                         blogProps: { blogpost },
                         userProps: { userInfo },
                       }}
