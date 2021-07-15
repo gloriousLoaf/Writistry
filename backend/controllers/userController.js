@@ -2,6 +2,7 @@
 import asyncHandler from 'express-async-handler';
 import generateToken from '../utils/generateToken.js';
 import User from '../models/userModel.js';
+import Blog from '../models/blogModel.js';
 
 /**
  * @desc      Auth user & get token
@@ -143,11 +144,16 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
   const { avatarString } = req.body;
 
   const user = await User.findById(req.user._id);
+  await Blog.updateMany(
+    { authorId: req.user._id },
+    { authorAvatar: avatarString }
+  );
 
   // if user exists & password match
   if (user) {
     user.avatarString = avatarString;
     await user.save();
+    // await blogs.save();
     res.json(user);
   } else {
     res.status(404);
