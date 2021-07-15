@@ -2,8 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card } from 'react-bootstrap';
 import { dateFix } from '../helpers/helpers';
+import Avatar from 'boring-avatars';
 
 const BlogCard = ({ blogposts, userInfo }) => {
+  // to compare auth'd user vs current profile being viewed
+  const sessionUser = JSON.parse(localStorage.getItem('userInfo'));
+
   return (
     <>
       {blogposts ? (
@@ -18,8 +22,21 @@ const BlogCard = ({ blogposts, userInfo }) => {
                 </Link>
                 <Card.Text>{blogpost.byline}</Card.Text>
                 <Card.Text>
-                  by{' '}
+                  <Avatar
+                    style={{ marginRight: '2rem' }}
+                    size={25}
+                    name={blogpost.authorAvatar}
+                    variant='beam'
+                    colors={[
+                      '#F9F9F9',
+                      '#B6B2AC',
+                      '#EEDF1A',
+                      '#FF221C',
+                      '#1D2440',
+                    ]}
+                  />
                   <Link
+                    className='ml-2'
                     to={{
                       pathname: `/profile/${blogpost.authorId}`,
                       userProfile: { blogpost },
@@ -29,19 +46,21 @@ const BlogCard = ({ blogposts, userInfo }) => {
                   </Link>
                 </Card.Text>
                 <Card.Text>{dateFix(blogpost.createdAt)}</Card.Text>
-                {userInfo && userInfo._id === blogpost.authorId && (
-                  <div className='d-flex flex-row-reverse'>
-                    <Link
-                      to={{
-                        pathname: `/edit/${blogpost._id}`,
-                        blogProps: { blogpost },
-                        userProps: { userInfo },
-                      }}
-                    >
-                      Edit
-                    </Link>
-                  </div>
-                )}
+                {userInfo &&
+                  sessionUser &&
+                  blogpost.authorId === sessionUser._id && (
+                    <div className='d-flex flex-row-reverse'>
+                      <Link
+                        to={{
+                          pathname: `/edit/${blogpost._id}`,
+                          blogProps: { blogpost },
+                          userProps: { userInfo },
+                        }}
+                      >
+                        Edit
+                      </Link>
+                    </div>
+                  )}
               </Card.Body>
             </Card>
           ))
