@@ -83,10 +83,11 @@ export const createBlog =
 
       const author = userInfo.name;
       const authorId = userInfo._id;
+      const authorAvatar = userInfo.avatarString;
 
       const { data } = await axios.post(
         '/api/blogs',
-        { author, authorId, name, byline, content },
+        { author, authorId, authorAvatar, name, byline, content },
         config
       );
 

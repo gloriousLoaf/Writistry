@@ -12,6 +12,10 @@ const blogSchema = mongoose.Schema(
       required: true,
       ref: 'User',
     },
+    authorAvatar: {
+      type: String,
+      required: true,
+    },
     name: {
       type: String,
       required: true,

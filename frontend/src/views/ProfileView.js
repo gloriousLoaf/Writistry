@@ -57,7 +57,9 @@ const ProfileView = ({ match }) => {
                 <p>{userInfo.bio}</p>
               )}
               {sessionUser && userInfo._id === sessionUser._id && (
-                <Link to={`/profile/${userInfo._id}/edit`}>Edit Profile</Link>
+                <Link to={`/profile/${userInfo._id}/edit`}>
+                  Edit Profile, Avatar and Settings
+                </Link>
               )}
             </Col>
           </Row>
