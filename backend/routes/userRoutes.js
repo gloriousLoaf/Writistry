@@ -7,6 +7,8 @@ import {
   updateUserProfile,
   updateUserPassword,
   updateUserAvatar,
+  saveToUserReadingList,
+  deleteFromUserReadingList,
   getUsers,
   deleteUser,
   getUserById,
@@ -24,6 +26,8 @@ router
   .put(protect, updateUserProfile);
 router.route('/profile/auth/:id').put(protect, updateUserPassword);
 router.route('/profile/avatar/:id').put(protect, updateUserAvatar);
+router.route('/readingList/:id').put(protect, saveToUserReadingList);
+router.route('/readingList/delete/:id').put(protect, deleteFromUserReadingList);
 router
   .route('/:id')
   .delete(protect, isAdmin, deleteUser)

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ReactMarkdown from 'react-markdown';
 import ShareLink from 'react-twitter-share-link';
 import { getBlogById } from '../actions/blogActions';
+import { deleteReadingList, saveReadingList } from '../actions/userActions';
 import Wrapper from '../components/Wrapper';
 import Bookmark from '../components/Bookmark';
 import BookmarkFilled from '../components/BookmarkFilled';
@@ -25,13 +26,17 @@ const BlogView = ({ match }) => {
 
   const link = window.location.href;
 
-  // TODO: write real save & remove handlers
+  // TODO: use returned data to update UI
   const saveToReadingList = () => {
-    console.log('saved');
+    dispatch(saveReadingList(blogpost._id)).then((data) => {
+      console.log('data', data);
+    });
   };
 
   const removeFromReadingList = () => {
-    console.log('removed');
+    dispatch(deleteReadingList(blogpost._id)).then((data) => {
+      console.log('data', data);
+    });
   };
 
   return (

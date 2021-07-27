@@ -162,6 +162,68 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
 });
 
 /**
+ * @desc      Add to user reading list
+ * @route     PUT /api/users/readingList/:id
+ * @access    Private/Auth'd Users
+ */
+const saveToUserReadingList = asyncHandler(async (req, res) => {
+  const { id: blogId } = req.body;
+  const userId = req.params.id;
+
+  const user = await User.findById(userId);
+
+  if (user) {
+    // pull readingList for readability
+    const { readingList } = user;
+
+    if (readingList[0] === '') {
+      // user has no bookmarks
+      readingList[0] = blogId;
+
+      user.readingList = readingList;
+    } else {
+      // push to list, dedupe
+      readingList.push(blogId);
+      const cleanReadingList = [...new Set(readingList)];
+
+      user.readingList = cleanReadingList;
+    }
+
+    await user.save();
+    res.json(user);
+  } else {
+    res.status(404);
+    throw new Error('User not found.');
+  }
+});
+
+/**
+ * @desc      Delete from user reading list
+ * @route     PUT /api/users/readingList/delete/:id
+ * @access    Private/Auth'd Users
+ */
+const deleteFromUserReadingList = asyncHandler(async (req, res) => {
+  const { id: blogId } = req.body;
+  const userId = req.params.id;
+
+  const user = await User.findById(userId);
+
+  if (user) {
+    const { readingList } = user;
+    const cleanReadingList = readingList.filter((read) => read !== blogId);
+
+    user.readingList = cleanReadingList;
+
+    await user.save();
+    res.json(user);
+  } else {
+    res.status(404);
+    throw new Error('User not found.');
+  }
+});
+
+// UNUSED??
+/**
  * @desc      Get all user
  * @route     GET /api/users
  * @access    Private/Admin
@@ -171,6 +233,7 @@ const getUsers = asyncHandler(async (req, res) => {
   res.json(users);
 });
 
+// UNUSED??
 /**
  * @desc      Delete user
  * @route     DELETE /api/users/:id
@@ -243,6 +306,8 @@ export {
   updateUserProfile,
   updateUserPassword,
   updateUserAvatar,
+  saveToUserReadingList,
+  deleteFromUserReadingList,
   getUsers,
   deleteUser,
   getUserById,
