@@ -39,6 +39,11 @@ const userSchema = mongoose.Schema(
         ref: 'Blog',
       },
     ],
+    readingList: {
+      type: Array,
+      required: true,
+      default: [],
+    },
   },
   {
     timestamps: true,

@@ -77,9 +77,14 @@ button:focus {
   transform: scale(0.9);
 }
 
-.selfie {
-  max-height: 12rem;
-  max-width: 12rem;
+.bookmark-btn {
+  border: none;
+  background-color: inherit;
+}
+
+.bookmark-btn:hover,
+.bookmark-btn:focus {
+  outline: 1px solid var(--dark-red);
 }
 
 /* overriding some bootstrap
