@@ -12,7 +12,9 @@ import Blog from '../models/blogModel.js';
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await User.findOne({ email }).select('+password');
+  const user = await User.findOne({ email })
+    .select('+password')
+    .populate('blogposts');
 
   // if user exists & password match
   if (user && (await user.matchPassword(password))) {
@@ -20,7 +22,9 @@ const authUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      blogposts: user.blogposts,
       avatarString: user.avatarString,
+      readingList: user.readingList,
       isAdmin: user.isAdmin,
       token: generateToken(user._id),
     });
@@ -213,6 +217,7 @@ const deleteFromUserReadingList = asyncHandler(async (req, res) => {
     const cleanReadingList = readingList.filter((read) => read !== blogId);
 
     user.readingList = cleanReadingList;
+    user.token = generateToken(user._id);
 
     await user.save();
     res.json(user);

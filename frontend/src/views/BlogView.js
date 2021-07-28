@@ -1,9 +1,10 @@
 /* BLOG POST VIEW */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import ReactMarkdown from 'react-markdown';
-import ShareLink from 'react-twitter-share-link';
+// TODO: see in render below readingList
+// import ShareLink from 'react-twitter-share-link';
 import { getBlogById } from '../actions/blogActions';
 import { deleteReadingList, saveReadingList } from '../actions/userActions';
 import Wrapper from '../components/Wrapper';
@@ -12,6 +13,11 @@ import BookmarkFilled from '../components/BookmarkFilled';
 import { dateFix } from '../helpers/helpers';
 
 const BlogView = ({ match }) => {
+  // to display correct Bookmark button
+  const [bookmarkButton, setBookmarkButton] = useState(false);
+  // to hide bookmark options on a user's own blogposts
+  const [myBlogpost, setMyBlogpost] = useState(false);
+
   const dispatch = useDispatch();
 
   const blogDetails = useSelector((state) => state.blogById);
@@ -24,18 +30,49 @@ const BlogView = ({ match }) => {
     dispatch(getBlogById(match.params.id));
   }, [dispatch, match]);
 
-  const link = window.location.href;
+  /**
+   * userInfo and blogpost data are used to update
+   * local state hook bookmarkButton, so that the UI
+   * can reflect correct Bookmark button
+   */
+  useEffect(() => {
+    if (userInfo.readingList[0] === undefined) {
+      setBookmarkButton(false);
+    } else {
+      userInfo.readingList.forEach((blog) => {
+        // if already in readList, show BookmarkFilled
+        if (blog === blogpost._id) {
+          setBookmarkButton(true);
+        } else {
+          setBookmarkButton(false);
+        }
+      });
+    }
+  }, [userInfo, blogpost]);
 
-  // TODO: use returned data to update UI
+  useEffect(() => {
+    // if the user authored this blogpost, hide bookmarks
+    if (blogpost.authorId === userInfo._id) {
+      setMyBlogpost(true);
+    } else {
+      setMyBlogpost(false);
+    }
+  }, [userInfo, blogpost]);
+
+  // TODO: see Twitter share link in render, below readingList
+  // const link = window.location.href;
+
   const saveToReadingList = () => {
     dispatch(saveReadingList(blogpost._id)).then((data) => {
-      console.log('data', data);
+      userInfo.readingList = data.readingList;
+      setBookmarkButton(true);
     });
   };
 
   const removeFromReadingList = () => {
     dispatch(deleteReadingList(blogpost._id)).then((data) => {
-      console.log('data', data);
+      userInfo.readingList = data.readingList;
+      setBookmarkButton(false);
     });
   };
 
@@ -66,22 +103,29 @@ const BlogView = ({ match }) => {
           <hr />
           <ReactMarkdown children={blogpost.content} className='my-4' />
           <hr />
-          {userInfo && blogpost ? (
+          {myBlogpost === false && userInfo && blogpost ? (
             <>
               <div className='my-3'>
                 <p>
                   <span className='font-weight-bold'>
-                    Add to your Reading List
+                    {bookmarkButton === false ? (
+                      <>
+                        <Bookmark buttonClick={saveToReadingList} />
+                        Add to your Reading List
+                      </>
+                    ) : (
+                      <>
+                        <BookmarkFilled buttonClick={removeFromReadingList} />
+                        Remove from your Reading List
+                      </>
+                    )}
                   </span>
                 </p>
-                <span>
-                  {/* TODO: add logic to display correct svg button + onClick functions */}
-                  <Bookmark buttonClick={saveToReadingList} />
-                  <BookmarkFilled buttonClick={removeFromReadingList} />
-                </span>
               </div>
-              <div className='my-5'>
+              {/* TODO: Revamp / rethink Twitter sharing links */}
+              {/* <div className='my-5'>
                 <p className='font-weight-bold'>Share this on Twitter</p>
+
                 <ShareLink
                   className='my-5'
                   text={`Check out this blog post by @davidmcodes - "${blogpost.name}"`}
@@ -93,15 +137,17 @@ const BlogView = ({ match }) => {
                     </a>
                   )}
                 </ShareLink>
-              </div>
+              </div> */}
             </>
           ) : (
-            <div className='my-5'>
-              <p className='font-weight-bold'>
-                Sign In to Save this article or share it on Twitter
-              </p>
-              <Link to={'/signin'}>Sign In</Link>
-            </div>
+            <></>
+            // TODO: Twitter link, see above
+            // <div className='my-5'>
+            //   <p className='font-weight-bold'>
+            //     Sign In to Save this article or share it on Twitter
+            //   </p>
+            //   <Link to={'/signin'}>Sign In</Link>
+            // </div>
           )}
         </Wrapper>
       ) : (

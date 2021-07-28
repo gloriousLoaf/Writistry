@@ -249,6 +249,7 @@ export const updateAvatar = (avatarString) => async (dispatch, getState) => {
       payload: data,
     });
 
+    localStorage.setItem('userInfo', JSON.stringify(data));
     return data;
   } catch (error) {
     dispatch({
@@ -290,6 +291,7 @@ export const saveReadingList = (id) => async (dispatch, getState) => {
       payload: data,
     });
 
+    localStorage.setItem('userInfo', JSON.stringify(data));
     return data;
   } catch (error) {
     dispatch({
@@ -331,6 +333,7 @@ export const deleteReadingList = (id) => async (dispatch, getState) => {
       payload: data,
     });
 
+    localStorage.setItem('userInfo', JSON.stringify(data));
     return data;
   } catch (error) {
     dispatch({
