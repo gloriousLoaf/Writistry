@@ -38,6 +38,17 @@ const ProfileEditView = ({ match, history }) => {
     dispatch(getUserProfileById(match.params.id));
   }, [dispatch, match]);
 
+  /**
+   * user might edit only name or email, without touching bio.
+   * if so, bio state is empty & submitting will overwrite db.
+   * so set it as soon as userInfo is available
+   */
+  useEffect(() => {
+    if (userInfo) {
+      setBio(userInfo.bio);
+    }
+  }, [userInfo]);
+
   // prevent users from seeing another user's edit view
   useEffect(() => {
     if (!sessionUser || sessionUser._id !== match.params.id) {
@@ -143,6 +154,7 @@ const ProfileEditView = ({ match, history }) => {
                     <Form.Control
                       type='text'
                       as='textarea'
+                      // value={bio}
                       defaultValue={userInfo.bio}
                       maxLength={250}
                       onChange={(e) => setBio(e.target.value)}
