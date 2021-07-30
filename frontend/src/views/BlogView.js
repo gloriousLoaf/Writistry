@@ -104,59 +104,32 @@ const BlogView = ({ match }) => {
           <hr />
           {/* not signed in */}
           {!userInfo && (
-            <>
-              <div className='my-5'>
-                <p className='font-weight-bold'>
-                  Sign In to save this to your Reading List
-                </p>
-                <Link to={'/signin'}>Sign In</Link>
-              </div>
-              {/* TODO: Twitter link, see above */}
-              {/* <div className='my-5'>
-                <p className='font-weight-bold'>
-                  Sign In to save this article or share it on Twitter
-                </p>
-                <Link to={'/signin'}>Sign In</Link>
-              </div> */}
-            </>
+            <div className='my-5'>
+              <p className='font-weight-bold'>
+                Sign In to save this to your Reading List
+              </p>
+              <Link to={'/signin'}>Sign In</Link>
+            </div>
           )}
           {/* not my own blogpost + signed in === show bookmark options */}
           {myBlogpost === false && userInfo && (
-            <>
-              <div className='my-3'>
-                <p>
-                  <span className='font-weight-bold'>
-                    {bookmarkButton === false ? (
-                      <>
-                        <Bookmark buttonClick={saveToReadingList} />
-                        Add to your Reading List
-                      </>
-                    ) : (
-                      <>
-                        <BookmarkFilled buttonClick={removeFromReadingList} />
-                        Remove from your Reading List
-                      </>
-                    )}
-                  </span>
-                </p>
-              </div>
-              {/* TODO: Revamp / rethink Twitter sharing links */}
-              {/* <div className='my-5'>
-                <p className='font-weight-bold'>Share this on Twitter</p>
-
-                <ShareLink
-                  className='my-5'
-                  text={`Check out this blog post by @davidmcodes - "${blogpost.name}"`}
-                  link={link}
-                >
-                  {(link) => (
-                    <a href={link} target='_blank' rel='noreferrer'>
-                      {blogpost.name}
-                    </a>
+            <div className='my-3'>
+              <p>
+                <span className='font-weight-bold'>
+                  {bookmarkButton === false ? (
+                    <>
+                      <Bookmark buttonClick={saveToReadingList} />
+                      Add to your Reading List
+                    </>
+                  ) : (
+                    <>
+                      <BookmarkFilled buttonClick={removeFromReadingList} />
+                      Remove from your Reading List
+                    </>
                   )}
-                </ShareLink>
-              </div> */}
-            </>
+                </span>
+              </p>
+            </div>
           )}
         </Wrapper>
       ) : (
