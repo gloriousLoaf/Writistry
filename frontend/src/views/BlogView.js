@@ -6,7 +6,7 @@ import ReactMarkdown from 'react-markdown';
 // TODO: see in render below readingList
 // import ShareLink from 'react-twitter-share-link';
 import { getBlogById } from '../actions/blogActions';
-import { deleteReadingList, saveReadingList } from '../actions/userActions';
+import { saveReadingList, deleteReadingList } from '../actions/userActions';
 import Wrapper from '../components/Wrapper';
 import Bookmark from '../components/Bookmark';
 import BookmarkFilled from '../components/BookmarkFilled';
@@ -14,7 +14,7 @@ import { dateFix } from '../helpers/helpers';
 
 const BlogView = ({ match }) => {
   // to display correct Bookmark button
-  const [bookmarkButton, setBookmarkButton] = useState(false);
+  const [bookmarkButton, setBookmarkButton] = useState();
   // to hide bookmark options on a user's own blogposts
   const [myBlogpost, setMyBlogpost] = useState(false);
 
@@ -30,32 +30,31 @@ const BlogView = ({ match }) => {
     dispatch(getBlogById(match.params.id));
   }, [dispatch, match]);
 
+  // if the user authored this blogpost, hide bookmark options
+  useEffect(() => {
+    if (userInfo && blogpost.authorId === userInfo._id) {
+      setMyBlogpost(true);
+    } else {
+      setMyBlogpost(false);
+    }
+  }, [userInfo, blogpost]);
+
   /**
    * userInfo and blogpost data are used to update
    * local state hook bookmarkButton, so that the UI
    * can reflect correct Bookmark button
    */
   useEffect(() => {
-    if (userInfo.readingList[0] === undefined) {
-      setBookmarkButton(false);
-    } else {
-      userInfo.readingList.forEach((blog) => {
-        // if already in readList, show BookmarkFilled
-        if (blog === blogpost._id) {
-          setBookmarkButton(true);
-        } else {
-          setBookmarkButton(false);
-        }
-      });
-    }
-  }, [userInfo, blogpost]);
-
-  useEffect(() => {
-    // if the user authored this blogpost, hide bookmarks
-    if (blogpost.authorId === userInfo._id) {
-      setMyBlogpost(true);
-    } else {
-      setMyBlogpost(false);
+    if (userInfo && userInfo !== null) {
+      // filter for this blogpost matches entry in readingList
+      const isMatch = userInfo.readingList.filter(
+        (readBlogpost) => readBlogpost === blogpost._id
+      );
+      if (isMatch[0] === blogpost._id) {
+        setBookmarkButton(true);
+      } else {
+        setBookmarkButton(false);
+      }
     }
   }, [userInfo, blogpost]);
 
@@ -103,7 +102,26 @@ const BlogView = ({ match }) => {
           <hr />
           <ReactMarkdown children={blogpost.content} className='my-4' />
           <hr />
-          {myBlogpost === false && userInfo && blogpost ? (
+          {/* not signed in */}
+          {!userInfo && (
+            <>
+              <div className='my-5'>
+                <p className='font-weight-bold'>
+                  Sign In to save this to your Reading List
+                </p>
+                <Link to={'/signin'}>Sign In</Link>
+              </div>
+              {/* TODO: Twitter link, see above */}
+              {/* <div className='my-5'>
+                <p className='font-weight-bold'>
+                  Sign In to save this article or share it on Twitter
+                </p>
+                <Link to={'/signin'}>Sign In</Link>
+              </div> */}
+            </>
+          )}
+          {/* not my own blogpost + signed in === show bookmark options */}
+          {myBlogpost === false && userInfo && (
             <>
               <div className='my-3'>
                 <p>
@@ -139,15 +157,6 @@ const BlogView = ({ match }) => {
                 </ShareLink>
               </div> */}
             </>
-          ) : (
-            <></>
-            // TODO: Twitter link, see above
-            // <div className='my-5'>
-            //   <p className='font-weight-bold'>
-            //     Sign In to Save this article or share it on Twitter
-            //   </p>
-            //   <Link to={'/signin'}>Sign In</Link>
-            // </div>
           )}
         </Wrapper>
       ) : (

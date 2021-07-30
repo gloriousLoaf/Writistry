@@ -41,9 +41,9 @@ const userSchema = mongoose.Schema(
     ],
     readingList: [
       {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: true,
-        default: [],
+        ref: 'Blog',
       },
     ],
   },

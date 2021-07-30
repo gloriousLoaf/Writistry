@@ -41,6 +41,12 @@ const Header = () => {
                   >
                     <Nav.Link>Profile</Nav.Link>
                   </LinkContainer>
+                  <LinkContainer
+                    to={`/readingList/${userInfo._id}`}
+                    className='text-dark'
+                  >
+                    <Nav.Link>Reading List</Nav.Link>
+                  </LinkContainer>
                   <LinkContainer to='/create' className='text-dark'>
                     <Nav.Link>Create Post</Nav.Link>
                   </LinkContainer>

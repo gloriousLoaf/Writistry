@@ -77,7 +77,9 @@ const registerUser = asyncHandler(async (req, res) => {
  * @access    Public
  */
 const getUserProfile = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params.id).populate('blogposts');
+  const user = await User.findById(req.params.id).populate(
+    'blogposts readingList'
+  );
 
   if (user) {
     res.json(user);
@@ -180,7 +182,7 @@ const saveToUserReadingList = asyncHandler(async (req, res) => {
     // pull readingList for readability
     const { readingList } = user;
 
-    if (readingList[0] === '') {
+    if (readingList[0] === undefined) {
       // user has no bookmarks
       readingList[0] = blogId;
 
@@ -190,7 +192,7 @@ const saveToUserReadingList = asyncHandler(async (req, res) => {
       readingList.push(blogId);
       const cleanReadingList = [...new Set(readingList)];
 
-      user.readingList = cleanReadingList;
+      user.readingList = Object(cleanReadingList);
     }
 
     await user.save();
@@ -214,10 +216,9 @@ const deleteFromUserReadingList = asyncHandler(async (req, res) => {
 
   if (user) {
     const { readingList } = user;
-    const cleanReadingList = readingList.filter((read) => read !== blogId);
+    const cleanReadingList = readingList.filter((read) => read != blogId);
 
-    user.readingList = cleanReadingList;
-    user.token = generateToken(user._id);
+    user.readingList = Object(cleanReadingList);
 
     await user.save();
     res.json(user);
