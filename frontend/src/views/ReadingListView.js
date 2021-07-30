@@ -6,15 +6,25 @@ import Wrapper from '../components/Wrapper';
 import BlogCard from '../components/BlogCard';
 import { getUserProfileById } from '../actions/userActions';
 
-const ReadingListView = ({ match }) => {
+const ReadingListView = ({ match, history }) => {
   const dispatch = useDispatch();
 
   const userProfile = useSelector((state) => state.userProfile);
   const { userInfo } = userProfile;
 
+  // prevent users from seeing each others' readingList
+  const sessionUser = JSON.parse(localStorage.getItem('userInfo'));
+
   useEffect(() => {
     dispatch(getUserProfileById(match.params.id));
   }, [dispatch, match]);
+
+  // prevent users from seeing another user's edit view
+  useEffect(() => {
+    if (!sessionUser || sessionUser._id !== match.params.id) {
+      history.push('/feed');
+    }
+  }, [match, history, sessionUser]);
 
   return (
     <Wrapper>

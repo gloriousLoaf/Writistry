@@ -56,6 +56,7 @@ const ProfileView = ({ match }) => {
               ) : (
                 <p>{userInfo.bio}</p>
               )}
+              {/* hide edit & readingList unless viewing your own profile */}
               {sessionUser && userInfo._id === sessionUser._id && (
                 <div className='mb-3'>
                   <Link to={`/profile/${userInfo._id}/edit`}>
@@ -63,11 +64,13 @@ const ProfileView = ({ match }) => {
                   </Link>
                 </div>
               )}
-              <div>
-                <Link to={`/readingList/${userInfo._id}`}>
-                  View your Reading List
-                </Link>
-              </div>
+              {sessionUser && userInfo._id === sessionUser._id && (
+                <div>
+                  <Link to={`/readingList/${userInfo._id}`}>
+                    View your Reading List
+                  </Link>
+                </div>
+              )}
             </Col>
           </Row>
           {blogposts.length > 0 && (
