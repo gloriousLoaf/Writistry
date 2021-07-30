@@ -12,7 +12,9 @@ import Blog from '../models/blogModel.js';
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await User.findOne({ email }).select('+password');
+  const user = await User.findOne({ email })
+    .select('+password')
+    .populate('blogposts');
 
   // if user exists & password match
   if (user && (await user.matchPassword(password))) {
@@ -20,7 +22,9 @@ const authUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      blogposts: user.blogposts,
       avatarString: user.avatarString,
+      readingList: user.readingList,
       isAdmin: user.isAdmin,
       token: generateToken(user._id),
     });
@@ -73,7 +77,9 @@ const registerUser = asyncHandler(async (req, res) => {
  * @access    Public
  */
 const getUserProfile = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params.id).populate('blogposts');
+  const user = await User.findById(req.params.id).populate(
+    'blogposts readingList'
+  );
 
   if (user) {
     res.json(user);
@@ -162,6 +168,68 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
 });
 
 /**
+ * @desc      Add to user reading list
+ * @route     PUT /api/users/readingList/:id
+ * @access    Private/Auth'd Users
+ */
+const saveToUserReadingList = asyncHandler(async (req, res) => {
+  const { id: blogId } = req.body;
+  const userId = req.params.id;
+
+  const user = await User.findById(userId);
+
+  if (user) {
+    // pull readingList for readability
+    const { readingList } = user;
+
+    if (readingList[0] === undefined) {
+      // user has no bookmarks
+      readingList[0] = blogId;
+
+      user.readingList = readingList;
+    } else {
+      // push to list, dedupe
+      readingList.push(blogId);
+      const cleanReadingList = [...new Set(readingList)];
+
+      user.readingList = Object(cleanReadingList);
+    }
+
+    await user.save();
+    res.json(user);
+  } else {
+    res.status(404);
+    throw new Error('User not found.');
+  }
+});
+
+/**
+ * @desc      Delete from user reading list
+ * @route     PUT /api/users/readingList/delete/:id
+ * @access    Private/Auth'd Users
+ */
+const deleteFromUserReadingList = asyncHandler(async (req, res) => {
+  const { id: blogId } = req.body;
+  const userId = req.params.id;
+
+  const user = await User.findById(userId);
+
+  if (user) {
+    const { readingList } = user;
+    const cleanReadingList = readingList.filter((read) => read != blogId);
+
+    user.readingList = Object(cleanReadingList);
+
+    await user.save();
+    res.json(user);
+  } else {
+    res.status(404);
+    throw new Error('User not found.');
+  }
+});
+
+// UNUSED??
+/**
  * @desc      Get all user
  * @route     GET /api/users
  * @access    Private/Admin
@@ -171,6 +239,7 @@ const getUsers = asyncHandler(async (req, res) => {
   res.json(users);
 });
 
+// UNUSED??
 /**
  * @desc      Delete user
  * @route     DELETE /api/users/:id
@@ -243,6 +312,8 @@ export {
   updateUserProfile,
   updateUserPassword,
   updateUserAvatar,
+  saveToUserReadingList,
+  deleteFromUserReadingList,
   getUsers,
   deleteUser,
   getUserById,

@@ -1,4 +1,4 @@
-/* HOME VIEW */
+/* PROFILE VIEW */
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -57,14 +57,21 @@ const ProfileView = ({ match }) => {
                 <p>{userInfo.bio}</p>
               )}
               {sessionUser && userInfo._id === sessionUser._id && (
-                <Link to={`/profile/${userInfo._id}/edit`}>
-                  Edit Profile, Avatar and Settings
-                </Link>
+                <div className='mb-3'>
+                  <Link to={`/profile/${userInfo._id}/edit`}>
+                    Edit Profile, Avatar and Settings
+                  </Link>
+                </div>
               )}
+              <div>
+                <Link to={`/readingList/${userInfo._id}`}>
+                  View your Reading List
+                </Link>
+              </div>
             </Col>
           </Row>
           {blogposts.length > 0 && (
-            <Row className='my-4'>
+            <Row className='my-3'>
               <Col className='my-2'>
                 <BlogCard blogposts={blogposts} userInfo={userInfo} />
               </Col>
