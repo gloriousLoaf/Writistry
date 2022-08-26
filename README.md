@@ -1,6 +1,6 @@
 # Writistry
 
-A modern blog platform with markdown support
+A modern blog platform with Markdown support
 
 ![GitHub language count](https://img.shields.io/github/languages/count/gloriousLoaf/Writistry)
 ![GitHub top language](https://img.shields.io/github/languages/top/gloriousLoaf/Writistry)
