@@ -118,7 +118,7 @@ version!)_
   [Node](https://nodejs.org/)
 - [react-markdown](https://www.npmjs.com/package/react-markdown)
 - [bcryptjs](https://www.npmjs.com/package/bcryptjs) and
-[jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken) for authentication.
+[jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken) for authentication
 <p>&nbsp;</p>
 
 ## ❔ Questions?
