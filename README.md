@@ -43,14 +43,7 @@ commenting are in development.
 
 To start your own instance, clone this repository and run `npm install` from the
 root directory. Then `cd client` and run another install to complete the
-dependencies. See this block in that `package.json` for a Heroku postbuild
-command to deploy from the CLI:
-
-```
-  "scripts": {
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
-  },
-```
+dependencies. 
 
 I built this app to store data using **MongoDB Atlas** cloud hosting. Please
 [see their docs for information](https://docs.atlas.mongodb.com/) regarding
@@ -71,9 +64,9 @@ To develop and run the app:
   start both servers listening at ports 3000 and 5000 respectively. Launch your
   browser, navigate to `localhost:3000` and begin using Writistry!
 - **Web Instance:** Connect your MongoDB cloud cluster to you preferred cloud
-platform for website hosting. I used **[Heroku](https://devcenter.heroku.com/)**
+platform for website hosting. I used **[Render](https://docs.render.com/)**
 to deploy this app, go here to checkout 👉
-**[Writistry](https://writistry.herokuapp.com/)** in action.
+**[Writistry](https://writistry-app.onrender.com)** in action.
 <p>&nbsp;</p>
 
 ## 📲 Usage
