@@ -17,7 +17,7 @@ A modern blog platform with Markdown support
 - [Questions](#-questions)
 <p>&nbsp;</p>
 
-#### Get straight to the business? **Visit** [Writistry](https://writistry.metcalf.dev/)/)
+#### Get straight to the business? **Visit** [Writistry](https://writistry.metcalf.dev/)
 
 ## 📝 Description
 
