@@ -17,7 +17,7 @@ A modern blog platform with Markdown support
 - [Questions](#-questions)
 <p>&nbsp;</p>
 
-#### Get straight to the business? **Visit** [Writistry](https://writistry-app.onrender.com)/)
+#### Get straight to the business? **Visit** [Writistry](https://cartme.metcalf.dev/)/)
 
 ## 📝 Description
 
@@ -66,7 +66,7 @@ To develop and run the app:
 - **Web Instance:** Connect your MongoDB cloud cluster to you preferred cloud
 platform for website hosting. I used **[Render](https://docs.render.com/)**
 to deploy this app, go here to checkout 👉
-**[Writistry](https://writistry-app.onrender.com)** in action.
+**[Writistry](https://cartme.metcalf.dev/)** in action.
 <p>&nbsp;</p>
 
 ## 📲 Usage
